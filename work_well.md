@@ -1,7 +1,7 @@
 
 <a name = "list_take_n"></a>
 
-```utilities.ml
+```ocaml utilities.ml
 type list_take_n
   :  (l: int list)
   -> {m: int | 0 <= m && m < List.length l}
