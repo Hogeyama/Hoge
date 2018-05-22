@@ -1,5 +1,4 @@
 
-
 <a name = "list_take_n"></a>
 ### Utilityies.list_take_n
 

@@ -23,13 +23,13 @@
     + Grammar.decompose_termと合わせる
 
 + Saturate.tyseq_mem
-    + 参照+再帰もある
+    + 参照 + 再帰もある
 
 + Saturate.tyseq_subsumed
-    + 参照+再帰もある
+    + 参照 + 再帰もある
 
 + Saturate.tyseq_merge_tys
-    + 参照+再帰もある
+    + 参照 + 再帰もある
 
 + Saturate.ty_of_head
 
@@ -107,8 +107,8 @@
 
 ### Array
 
-arrayへのアクセス(`f.(i)`)はindex out of bound例外を投げることを忘れていた
-調べ直さないと
+arrayへのアクセス`arr.(i)`はindex out of bound例外を投げることを忘れていた．  
+調べ直さないといけない
 
 ### 保留
 
