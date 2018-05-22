@@ -1,7 +1,7 @@
 
 
-### Utilityies.list_take_n
 <a name = "list_take_n"></a>
+### Utilityies.list_take_n
 
 ```ocaml utilities.ml
 type list_take_n
@@ -15,7 +15,4 @@ let rec list_take_n l n =
       [] -> assert false
     | x::l' -> x::(list_take_n l' (n-1))
 ```
-
-### Utilityies.list_repl
-
 

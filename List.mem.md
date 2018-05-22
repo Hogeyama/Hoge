@@ -1,6 +1,6 @@
 
-### Scc.split_list_at
 <a name = "split_list_at"></a>
+### Scc.split_list_at
 
 再帰を使う
 
@@ -19,8 +19,8 @@ let rec split_list_at x l =
              (y::l1, l2);;
 ```
 
-### Cegen.lookup_headty
 <a name = "lookup_headty"></a>
+### Cegen.lookup_headty
 
 ADTのパターンマッチとの組み合わせ．
 
@@ -45,8 +45,8 @@ external type Type.ty_of_t_q
   -> Grammar.ity list
 ```
 
-### Ai.add_binding_st
 <a name = "add_binding_st"></a>
+### Ai.add_binding_st
 
 TODO
 
@@ -60,8 +60,8 @@ let add_binding_st f rho qs =
 
 ここから変種
 
-### Grammar.find_sc
 <a name = "find_sc"></a>
+### Grammar.find_sc
 
 ```ocaml grammar.ml
 type find_sc
@@ -75,8 +75,8 @@ let find_sc f scc =
     | sc::_ -> sc
 ```
 
-### Saturate.ty_of_var
 <a name = "add_binding_st"></a>
+### Saturate.ty_of_var
 
 ```ocaml saturate.ml
 type ty_of_var
