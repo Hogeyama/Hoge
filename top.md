@@ -7,7 +7,7 @@
 
 <!-- 表にしたほうが読みやすいな -->
 
-+ [Cegen.mk_ehead](./ADT.ml#)
++ [Cegen.mk_ehead](./ADT.md#mk_ehead)
 
 + [Cegen.lookup_headty](./List.mem.md#lookup_headty)
     + List.memとの組み合わせ
