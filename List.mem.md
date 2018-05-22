@@ -2,8 +2,6 @@
 <a name = "split_list_at"></a>
 ### Scc.split_list_at
 
-再帰を使う
-
 ```ocaml scc.ml
 type split_list_at
   :  (x : int)
@@ -22,7 +20,7 @@ let rec split_list_at x l =
 <a name = "lookup_headty"></a>
 ### Cegen.lookup_headty
 
-ADTのパターンマッチとの組み合わせ．
+[ADTのパターンマッチ](./TODO)との組み合わせ．
 
 ```ocaml cegen.ml
 type lookup_headty
@@ -39,8 +37,9 @@ let lookup_headty vte h aty =
         Type.ty_of_t_q a q
   | Var(x) -> (try List.assoc x vte with Not_found -> assert false)
   | _ -> assert false
+
 (* `Type.ty_of_t_q`もfailし得る *)
-external type Type.ty_of_t_q
+extern type Type.ty_of_t_q
   :  (a : Grammar.nameT)
   -> Grammar.ity list
 ```
@@ -75,7 +74,7 @@ let find_sc f scc =
     | sc::_ -> sc
 ```
 
-<a name = "add_binding_st"></a>
+<a name = "ty_of_var"></a>
 ### Saturate.ty_of_var
 
 ```ocaml saturate.ml
@@ -93,8 +92,4 @@ let rec ty_of_var venv (f,i) =
        proj_tys f (i-j1) tys
     else ty_of_var venv' (f,i)
 ```
-
-
-
-
 

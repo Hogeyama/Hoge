@@ -1,41 +1,44 @@
 
 # HorSat2の分析
 
-## 既に検証が通るもの
-
-+ [Utilities.list_take_n](./work_well.md#list_take_n)
-
-+ Utilities.list_repl
-
-+ Utilities.list_take_n_and_rest
-
-+ Utilities.list_rem_n
-
-
 ## 簡単な拡張が必要なもの
 
 ### 代数的データ構造のパターンマッチ
 
-+ Cegen.mk_ehead
-+ Cegen.lookup_headty
-+ Ai.expand_varheadnode
-    + 参照もある
+<!-- 表にしたほうが読みやすいな -->
+
++ [Cegen.mk_ehead](./ADT.ml#)
+
++ [Cegen.lookup_headty](./List.mem.md#lookup_headty)
+    + List.memとの組み合わせ
+
++ [Ai.expand_varheadnode](./ADT.md#expand_varheadnode)
+    + 参照との組み合わせ
+
 + Ai.term2head
+
 + Ai.childnodes
-+ Ai.nt_in_term_with_linearity
+
++ [Ai.nt_in_term_with_linearity](./ADT.md#nt_in_term_with_linearity)
     + Grammar.decompose_termと合わせる
+
 + Saturate.tyseq_mem
     + 参照+再帰もある
+
 + Saturate.tyseq_subsumed
     + 参照+再帰もある
+
 + Saturate.tyseq_merge_tys
     + 参照+再帰もある
+
 + Saturate.ty_of_head
+
 + Saturate.ty_of_headq
+
 + Saturate.ty_of_head
 
 
-### Array
+### Array syntax
 
 
 ## 本質的な拡張が必要なもの
@@ -81,20 +84,7 @@
     + `List.find (fun x -> List.mem f x) scc`
     + unionへのmembershipに帰着できる
 
-+ [Saturate.ty_of_var]
-    + memではなくsatisfy
-
-    ```
-    let rec ty_of_var venv (f,i) =
-      match venv with
-      | [] -> assert false
-      | (j1,j2,tys)::venv' ->
-        if j1<=i && i<=j2 then
-           proj_tys f (i-j1) tys
-        else ty_of_var venv' (f,i)
-    ```
-
-
++ [Saturate.ty_of_var](./List.mem.md#ty_of_var)
 
 ### 代数的データ型固有の述語
 
@@ -114,6 +104,11 @@
     + arity (同上)
 + Saturate.get_argtys
     + arity (同上)
+
+### Array
+
+arrayへのアクセス(`f.(i)`)はindex out of bound例外を投げることを忘れていた
+調べ直さないと
 
 ### 保留
 
