@@ -40,7 +40,7 @@ let expand_varheadnode term node =
 <a name = "nt_in_term_with_linearity"></a>
 ### Ai.nt_in_term_with_linearity
 
-```
+```ocaml
 type nt_in_term_with_linearity
   :  Grammar.term -> Grammar.nameNT list * Grammar.nameNT list
 let rec nt_in_term_with_linearity term =
