@@ -1,8 +1,4 @@
 
-# 用語
-
-TODO
-
 # HorSat2の分析
 
 ## 簡単な拡張が必要なもの
@@ -65,8 +61,6 @@ type foo = Foo of int | Bar of bool
 
 ### Reference, Hashtbl
 
-
-
 + [Conversion.register_nt](./Hashtbl.md#register_nt)
     + Hashtblのmembership
     + HorSat2への入力次第ではfailを避けられない
@@ -98,16 +92,12 @@ type foo = Foo of int | Bar of bool
     + Hashtblの単純なmembership
 
 + Saturate.tyseq_mem
-    + 難しいADTとの組み合わせ
 + Saturate.tyseq_subsumed
-    + 難しいADTとの組み合わせ
 + Saturate.tyseq_add_wo_subtyping
-    + 難しいADTとの組み合わせ
 + Saturate.tyseq_rem_subtyping_aux
-    + 難しいADTとの組み合わせ
 + Saturate.tyseq_merge_tys
-    + 難しいADTとの組み合わせ
-
+    + 以上5個は[難しい方のADT](#代数的データ型固有の述語)
+      との組み合わせ
 
 ### 代数的データ型固有の述語
 
