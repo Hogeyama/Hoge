@@ -41,11 +41,6 @@ let lookup_headty vte h aty =
         Type.ty_of_t_q a q
   | Var(x) -> (try List.assoc x vte with Not_found -> assert false)
   | _ -> assert false
-
-(* `Type.ty_of_t_q`もfailし得る *)
-extern type Type.ty_of_t_q
-  :  (a : Grammar.nameT)
-  -> Grammar.ity list
 ```
 
 <a name = "add_binding_st"></a>
