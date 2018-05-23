@@ -5,9 +5,8 @@
 
 ### 代数的データ構造のパターンマッチ
 
-<!-- 表にしたほうが読みやすいな -->
-
 + [Cegen.mk_ehead](./ADT.md#mk_ehead)
+    + 単純
 
 + [Cegen.lookup_headty](./List.mem.md#lookup_headty)
     + List.memとの組み合わせ
@@ -16,37 +15,22 @@
     + 参照との組み合わせ
 
 + Ai.term2head
+    + 単純
 
 + Ai.childnodes
+    + 単純
 
 + [Ai.nt_in_term_with_linearity](./ADT.md#nt_in_term_with_linearity)
     + Grammar.decompose_termと合わせる
-
-+ Saturate.tyseq_mem
-    + 参照 + 再帰もある
-
-+ Saturate.tyseq_subsumed
-    + 参照 + 再帰もある
-
-+ Saturate.tyseq_merge_tys
-    + 参照 + 再帰もある
-
-+ Saturate.ty_of_head
-
-+ Saturate.ty_of_headq
-
-+ Saturate.ty_of_head
-
-
-### Array syntax
-
 
 ## 本質的な拡張が必要なもの
 
 ### Reference, Hashtbl
 
-+ Conversion.register_nt
-+ Conversion.lookup_ntid
++ [Conversion.register_nt](./Hashtbl.md#register_nt)
+    + HorSat2への入力次第ではfailを避けられない
++ [Conversion.lookup_ntid](./Hashtbl.md#lookup_ntid)
+    + HorSat2への入力次第ではfailを避けられない
 + Cegen.evaluate_eterm
 + Scc.take_from_visited
 + Ai.expand_varheadnode
@@ -54,6 +38,7 @@
 + Ai.id2state
 + Ai.state2id
 + Ai.register_newnode
+
 + Saturate.tyseq_mem
     + ADT
 + Saturate.tyseq_subsumed
@@ -90,20 +75,42 @@
 
 + Conversion.pterm2term
     + 再帰的
+
 + Conversion.elim_fun_from_head
     + 再帰的
+
 + Cegen.mk_vte
     + arity
+
++ Saturate.split_ity
+    + arity
+
++ Saturate.get_range
+    + arity (同上)
+
++ Saturate.get_argtys
+    + arity (同上)
+
++ Saturate.tyseq_mem
+    + 参照 + 再帰もある
+
++ Saturate.tyseq_subsumed
+    + 参照 + 再帰もある
+
++ Saturate.tyseq_merge_tys
+    + 参照 + 再帰もある
+
++ Saturate.ty_of_head
+
++ Saturate.ty_of_headq
+
++ Saturate.ty_of_head
+
 + Cegen.merge_tree
     + どうするんだこれ
 + Cegen.string_of_path
     + どうするんだこれ(2)
-+ Saturate.split_ity
-    + arity
-+ Saturate.get_range
-    + arity (同上)
-+ Saturate.get_argtys
-    + arity (同上)
+
 
 ### Array
 
