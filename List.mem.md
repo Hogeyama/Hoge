@@ -1,4 +1,6 @@
 
+## List.mem
+
 <a name = "split_list_at"></a>
 ### Scc.split_list_at
 
@@ -57,7 +59,7 @@ let add_binding_st f rho qs =
     qref := merge_and_unify compare qs !qref
 ```
 
-ここから変種
+## List.exist
 
 <a name = "find_sc"></a>
 ### Grammar.find_sc

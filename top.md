@@ -96,12 +96,9 @@ type foo = Foo of int | Bar of bool
 + Saturate.tyseq_add_wo_subtyping
 + Saturate.tyseq_rem_subtyping_aux
 + Saturate.tyseq_merge_tys
-    + 以上5個は[難しい方のADT](#代数的データ型固有の述語)
-      との組み合わせ
+    + 以上5個は[難しい方のADT](#代数的データ型固有の述語)との組み合わせ
 
 ### 代数的データ型固有の述語
-
-例えば
 
 ```
 type ity = ItyQ of state
@@ -151,23 +148,21 @@ arity = function
 
 + Saturate.ty_of_head
 
-+ Cegen.merge_tree
-    + どうするんだこれ
-+ Cegen.string_of_path
-    + どうするんだこれ(2)
-
-
 ### Array
 
 arrayへのアクセス`arr.(i)`はindex out of bound例外を投げることを忘れていた．  
 調べ直さないといけない
 
-### 保留
+### TODO
 
 + Cegen.evaluate_eterm
 + Cegen.find_derivation
++ Cegen.merge_tree
++ Cegen.string_of_path
 + Cegen.mk_env
 + Pobdd.make_node
+
+
 
 # 相互再帰の型
 
