@@ -22,7 +22,7 @@ let rec split_list_at x l =
 <a name = "lookup_headty"></a>
 ### Cegen.lookup_headty
 
-[ADTのパターンマッチ](./TODO)との組み合わせ．
+[ADTのパターンマッチ](./ADT_easy.md)との組み合わせ．
 
 ```ocaml cegen.ml
 type lookup_headty
