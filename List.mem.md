@@ -64,6 +64,9 @@ let add_binding_st f rho qs =
 <a name = "find_sc"></a>
 ### Grammar.find_sc
 
+`List.exist (\x -> List.mem f x) scc`という述語が必要だが，
+`List.mem f (List.concat scc)`で置き換えられる．
+
 ```ocaml grammar.ml
 type find_sc
   :  (f : int)
@@ -78,6 +81,9 @@ let find_sc f scc =
 
 <a name = "ty_of_var"></a>
 ### Saturate.ty_of_var
+
+`List.exist (fun (j1,j2,_) -> j1 <= i && i <= j2) venv`という述語が必要．
+これを`List.exist`を使わずに書き直すのは難しそう？
 
 ```ocaml saturate.ml
 type ty_of_var

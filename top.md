@@ -25,7 +25,7 @@ type foo = Foo of int | Bar of bool
     + List.memとの組み合わせ
 
 + [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode)
-    + 参照との組み合わせ（deref後にパターンマッチをする）
+    + 参照との組み合わせ（deref後にパターンマッチする）
 
 + Ai.term2head
     + 単純
@@ -41,13 +41,15 @@ type foo = Foo of int | Bar of bool
 
 + [Scc.split_list_at](./List.mem.md#split_list_at)
     + 再帰
+
 + Grammar.find_dep
     + `List.assoc`を使うだけ
+
 + [Cegen.lookup_headty](./List.mem.md#lookup_headty)
     + ADTのパターンマッチと組み合わせ
+
 + [Ai.add_binding_st](./List.mem.md#add_binding_st)
-    + Referenceとの組み合わせ
-    + `List.assoc rho' (!binding_array_nt).(f)`
+    + Referenceとの組み合わせ: `List.assoc rho' (!binding_array_nt).(f)`
     + TODO 難しそう
 
 ### List.exists
