@@ -1,6 +1,7 @@
 
-
 # 用語
+
+TODO
 
 # HorSat2の分析
 
@@ -40,7 +41,30 @@ type foo = Foo of int | Bar of bool
 
 ## 本質的な拡張が必要なもの
 
+### List.mem
+
++ [Scc.split_list_at](./List.mem.md#split_list_at)
+    + 再帰
++ Grammar.find_dep
+    + `List.assoc`を使うだけ
++ [Cegen.lookup_headty](./List.mem.md#lookup_headty)
+    + ADTのパターンマッチと組み合わせ
++ [Ai.add_binding_st](./List.mem.md#add_binding_st)
+    + Referenceとの組み合わせ
+    + `List.assoc rho' (!binding_array_nt).(f)`
+    + TODO 難しそう
+
+### List.exists
+
++ [Grammar.find_sc](./List.mem.md#find_sc)
+    + `List.find (fun x -> List.mem f x) scc`
+    + unionへのmembershipに帰着できる
+
++ [Saturate.ty_of_var](./List.mem.md#ty_of_var)
+
 ### Reference, Hashtbl
+
+
 
 + [Conversion.register_nt](./Hashtbl.md#register_nt)
     + Hashtblのmembership
@@ -83,27 +107,6 @@ type foo = Foo of int | Bar of bool
 + Saturate.tyseq_merge_tys
     + 難しいADTとの組み合わせ
 
-
-### List.mem
-
-+ [Scc.split_list_at](./List.mem.md#split_list_at)
-    + 再帰
-+ Grammar.find_dep
-    + `List.assoc`を使うだけ
-+ [Cegen.lookup_headty](./List.mem.md#lookup_headty)
-    + ADTのパターンマッチと組み合わせ
-+ [Ai.add_binding_st](./List.mem.md#add_binding_st)
-    + Referenceとの組み合わせ
-    + `List.assoc rho' (!binding_array_nt).(f)`
-    + TODO 難しそう
-
-### List.exists
-
-+ [Grammar.find_sc](./List.mem.md#find_sc)
-    + `List.find (fun x -> List.mem f x) scc`
-    + unionへのmembershipに帰着できる
-
-+ [Saturate.ty_of_var](./List.mem.md#ty_of_var)
 
 ### 代数的データ型固有の述語
 
