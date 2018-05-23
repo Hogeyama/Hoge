@@ -101,11 +101,28 @@ type foo = Foo of int | Bar of bool
 
 ### 代数的データ型固有の述語
 
+例えば
+
+```
+type ity = ItyQ of state
+         | ItyFun of a * b * ity
+```
+
+という型に対して
+
+```
+arity = function
+        | ItyQ(_) -> 0
+        | ItyFun(_,_,aty) -> 1 + arity aty
+```
+
+という関数を使わないと仕様が書けないケースがある．
+
+
+
 + Conversion.pterm2term
-    + 再帰的
 
 + Conversion.elim_fun_from_head
-    + 再帰的
 
 + Cegen.mk_vte
     + arity
