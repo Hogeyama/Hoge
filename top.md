@@ -1,9 +1,12 @@
 
+
+# 用語
+
 # HorSat2の分析
 
 ## 簡単な拡張が必要なもの
 
-### 代数的データ構造のパターンマッチ
+### 代数的データ型(ADT)のパターンマッチ
 
 + [Cegen.mk_ehead](./ADT.md#mk_ehead)
     + 単純
@@ -49,21 +52,24 @@
     + 難しそう
 
 + Ai.id2state
+    + Hashtblの単純なmembership
 
 + Ai.state2id
+    + Hashtblの単純なmembership
 
 + Ai.register_newnode
+    + Hashtblの単純なmembership
 
 + Saturate.tyseq_mem
-    + ADT
+    + 難しいADTとの組み合わせ
 + Saturate.tyseq_subsumed
-    + ADT
+    + 難しいADTとの組み合わせ
 + Saturate.tyseq_add_wo_subtyping
-    + ADT
+    + 難しいADTとの組み合わせ
 + Saturate.tyseq_rem_subtyping_aux
-    + ADT
+    + 難しいADTとの組み合わせ
 + Saturate.tyseq_merge_tys
-    + ADT
+    + 難しいADTとの組み合わせ
 
 
 ### List.mem
