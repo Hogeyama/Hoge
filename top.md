@@ -116,13 +116,12 @@ arity = function
 という関数を使わないと仕様が書けないケースがある．
 
 
++ Cegen.mk_vte
+    + arity
 
 + Conversion.pterm2term
 
 + Conversion.elim_fun_from_head
-
-+ Cegen.mk_vte
-    + arity
 
 + Saturate.split_ity
     + arity
