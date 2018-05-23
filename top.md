@@ -22,14 +22,15 @@ type foo = Foo of int | Bar of bool
             is_Bar f && not (un_Bar f) }
 ```
 
-+ [Cegen.mk_ehead](./ADT.md#mk_ehead)
++ [Cegen.mk_ehead](./ADT_easy.md#mk_ehead)
     + 単純
 
 + [Cegen.lookup_headty](./List.mem.md#lookup_headty)
     + List.memとの組み合わせ
 
-+ [Ai.expand_varheadnode](./ADT.md#expand_varheadnode)
++ [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode)
     + 参照との組み合わせ
+    + deref後の項が特定のパターンにマッチすることを要求する
 
 + Ai.term2head
     + 単純
@@ -37,7 +38,7 @@ type foo = Foo of int | Bar of bool
 + Ai.childnodes
     + 単純
 
-+ [Ai.nt_in_term_with_linearity](./ADT.md#nt_in_term_with_linearity)
++ [Ai.nt_in_term_with_linearity](./ADT_easy.md#nt_in_term_with_linearity)
 
 ## 本質的な拡張が必要なもの
 
@@ -80,7 +81,7 @@ type foo = Foo of int | Bar of bool
 + [Scc.take_from_visited](./Reference.md#take_from_visited)
     + `int list ref`へのmembership
 
-+ [Ai.expand_varheadnode](./ADT.md#expand_varheadnode)
++ [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode)
     + ADTとの組み合わせ
 
 + [Ai.add_binding_st](./List.mem.md#add_binding_st)
