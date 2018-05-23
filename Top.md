@@ -118,7 +118,6 @@ arity = function
 
 という関数を使わないと仕様が書けないケースがある．そのようなものをここで扱う．
 
-
 + [Cegen.mk_vte](./ADT_difficult.md#mk_vte)
     + arity
 
