@@ -25,8 +25,7 @@ type foo = Foo of int | Bar of bool
     + List.memとの組み合わせ
 
 + [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode)
-    + 参照との組み合わせ
-    + deref後の項が特定のパターンにマッチすることを要求する
+    + 参照との組み合わせ（deref後にパターンマッチをする）
 
 + Ai.term2head
     + 単純
