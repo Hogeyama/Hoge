@@ -101,6 +101,8 @@ type foo = Foo of int | Bar of bool
 
 ### 代数的データ型固有の述語
 
+たとえば
+
 ```
 type ity = ItyQ of state
          | ItyFun of a * b * ity
@@ -114,7 +116,7 @@ arity = function
         | ItyFun(_,_,aty) -> 1 + arity aty
 ```
 
-という関数を使わないと仕様が書けないケースがある．
+という関数を使わないと仕様が書けないケースがある．そのようなものをここで扱う．
 
 
 + [Cegen.mk_vte](./ADT_difficult.md#mk_vte)

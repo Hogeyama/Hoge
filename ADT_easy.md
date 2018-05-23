@@ -1,4 +1,17 @@
 
+述語の中でパターンマッチができればよいもの．
+
+```ocaml
+type foo = Foo of int | Bar of bool
+```
+
+に対して次のようなrefinement typeが書ける必要がある．
+
+```
+{ f : foo | is_Foo f && un_Foo f > 0 ||
+            is_Bar f && not (un_Bar f) }
+```
+
 <a name = "mk_ehead"></a>
 ### Cegen.mk_ehead
 
