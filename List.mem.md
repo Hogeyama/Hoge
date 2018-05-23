@@ -4,6 +4,8 @@
 <a name = "split_list_at"></a>
 ### Scc.split_list_at
 
+基本的な形
+
 ```ocaml scc.ml
 type split_list_at
   :  (x : int)
