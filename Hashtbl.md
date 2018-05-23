@@ -4,7 +4,7 @@
 
 + HorSat2への入力次第では`DuplicatedNonterminal`の送出が避けられない
 
-```
+```ocaml
 type register_nt
   :  { ntname : string | not (Hashtbl.mem ntname tab_ntname2id) }
   -> unit
@@ -21,7 +21,7 @@ let register_nt ntname =
 
 + HorSat2への入力次第では`UndefinedNonterminal`の送出が避けられない
 
-```
+```ocaml
 type lookup_ntid
   :  { ntname : string | Hashtbl.mem ntname tab_ntname2id }
   -> Grammar.nameNT
@@ -30,7 +30,5 @@ let lookup_ntid ntname =
   with Not_found ->
       raise (UndefinedNonterminal ntname)
 ```
-
-
 
 

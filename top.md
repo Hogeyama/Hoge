@@ -28,15 +28,30 @@
 ### Reference, Hashtbl
 
 + [Conversion.register_nt](./Hashtbl.md#register_nt)
+    + Hashtblのmembership
     + HorSat2への入力次第ではfailを避けられない
+
 + [Conversion.lookup_ntid](./Hashtbl.md#lookup_ntid)
+    + Hashtblのmembership
     + HorSat2への入力次第ではfailを避けられない
+
 + Cegen.evaluate_eterm
-+ Scc.take_from_visited
-+ Ai.expand_varheadnode
-+ Ai.add_binding_st
+    + TODO (assertionが沢山ある)
+
++ [Scc.take_from_visited](./Reference.md#take_from_visited)
+    + `int list ref`へのmembership
+
++ [Ai.expand_varheadnode](./ADT.md#expand_varheadnode)
+    + ADTとの組み合わせ
+
++ [Ai.add_binding_st](./List.mem.md#add_binding_st)
+    + `List.assoc rho' (!binding_array_nt).(f)`
+    + 難しそう
+
 + Ai.id2state
+
 + Ai.state2id
+
 + Ai.register_newnode
 
 + Saturate.tyseq_mem
@@ -59,9 +74,10 @@
     + `List.assoc`を使うだけ
 + [Cegen.lookup_headty](./List.mem.md#lookup_headty)
     + ADTのパターンマッチと組み合わせ
-+ [Ai.add_binding_st](./List.mem.md#)
++ [Ai.add_binding_st](./List.mem.md#add_binding_st)
+    + Referenceとの組み合わせ
     + `List.assoc rho' (!binding_array_nt).(f)`
-    + 難しそう
+    + TODO 難しそう
 
 ### List.exists
 
