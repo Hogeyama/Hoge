@@ -26,7 +26,7 @@ let rec mk_vte vars at =
 ```
 arity = function
         | ItyQ(_) -> 0
-        | ItyFun(_,_,aty) -> 1 + arity(aty)
+        | ItyFun(_,_,aty) -> 1 + arity aty
 ```
 
 という関数を定義すると
