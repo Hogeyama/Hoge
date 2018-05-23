@@ -8,6 +8,19 @@
 
 ### 代数的データ型(ADT)のパターンマッチ
 
+述語の中でパターンマッチができればよいもの．
+
+```ocaml
+type foo = Foo of int | Bar of bool
+```
+
+に対して次のようなrefinement typeが書ける必要がある．
+
+```
+{ f : foo | is_Foo f && un_Foo f > 0 ||
+            is_Bar f && not (un_Bar f) }
+```
+
 + [Cegen.mk_ehead](./ADT.md#mk_ehead)
     + 単純
 
@@ -24,7 +37,6 @@
     + 単純
 
 + [Ai.nt_in_term_with_linearity](./ADT.md#nt_in_term_with_linearity)
-    + Grammar.decompose_termと合わせる
 
 ## 本質的な拡張が必要なもの
 
