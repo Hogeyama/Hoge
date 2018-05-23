@@ -40,6 +40,9 @@ let expand_varheadnode term node =
 <a name = "nt_in_term_with_linearity"></a>
 ### Ai.nt_in_term_with_linearity
 
+`nt_in_term_with_linearity`自身は全域関数．`App`のケースで呼び出す
+`Grammar.decompose_term`が`App(_,_)`の形のtermを返さないことを示す必要がある．
+
 ```ocaml
 type nt_in_term_with_linearity
   :  Grammar.term -> Grammar.nameNT list * Grammar.nameNT list
@@ -60,10 +63,6 @@ let rec nt_in_term_with_linearity term =
               nt_in_terms_with_linearity terms linearity_info 0 ([],[])
         | _ -> assert false
         end
-
-(* Grammar.decompose_termが App(_,_) の形のtermを
- * 返さないことを示す必要がある
- *)
 
 (* grammar.ml *)
 type decompose_term
