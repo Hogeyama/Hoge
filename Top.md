@@ -47,6 +47,8 @@ type foo = Foo of int | Bar of bool
 
 ### Reference, Hashtbl
 
+| 関数名 | コメント |
+|--------|----------|
 | [Conversion.register_nt](./Hashtbl.md#register_nt) | Hashtblのmembership. [^1] |
 | [Conversion.lookup_ntid](./Hashtbl.md#lookup_ntid) | Hashtblのmembership. [^1] |
 | Cegen.evaluate_eterm | TODO (assertionが沢山ある) |
