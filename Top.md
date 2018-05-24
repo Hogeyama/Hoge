@@ -64,7 +64,7 @@ type foo = Foo of int | Bar of bool
 | Saturate.tyseq_rem_subtyping_aux ||
 | Saturate.tyseq_merge_tys ||
 
-`[1]`: HorSat2への入力次第ではfailを避けられない
+`[1]`: HorSat2への入力次第ではfailを避けられない  
 `[2]`: [代数的データ型固有の述語](#代数的データ型固有の述語)との組み合わせ
 
 ### 代数的データ型固有の述語
