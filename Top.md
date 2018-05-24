@@ -104,7 +104,7 @@ arity = function
 ### Array
 
 arrayへのアクセス`arr.(i)`はindex out of bound例外を投げることを忘れていた．
-調べ直さないといけない
+調べ直します．
 
 ### TODO
 
@@ -114,8 +114,6 @@ arrayへのアクセス`arr.(i)`はindex out of bound例外を投げることを
 + Cegen.string_of_path
 + Cegen.mk_env
 + Pobdd.make_node
-
-
 
 <!--# 相互再帰の型-->
 
