@@ -86,36 +86,20 @@ arity = function
 
 という関数を使わないと仕様が書けないケースがある．そのようなものをここで扱う．
 
-+ [Cegen.mk_vte](./ADT_difficult.md#mk_vte)
-    + arity
-
-+ Conversion.pterm2term
-
-+ Conversion.elim_fun_from_head
-
-+ Saturate.split_ity
-    + arity
-
-+ Saturate.get_range
-    + arity (同上)
-
-+ Saturate.get_argtys
-    + arity (同上)
-
-+ Saturate.tyseq_mem
-    + 参照 + 再帰もある
-
-+ Saturate.tyseq_subsumed
-    + 参照 + 再帰もある
-
-+ Saturate.tyseq_merge_tys
-    + 参照 + 再帰もある
-
-+ Saturate.ty_of_head
-
-+ Saturate.ty_of_headq
-
-+ Saturate.ty_of_head
+| 関数名 | コメント |
+|--------|----------|
+| [Cegen.mk_vte](./ADT_difficult.md#mk_vte) | arity |
+| Conversion.pterm2term | |
+| Conversion.elim_fun_from_head | |
+| Saturate.split_ity | arity |
+| Saturate.get_range | arity (同上) |
+| Saturate.get_argtys | arity (同上) |
+| Saturate.tyseq_mem | 参照と再帰も関係する |
+| Saturate.tyseq_subsumed | 参照と再帰も関係する |
+| Saturate.tyseq_merge_tys | 参照と再帰も関係する |
+| Saturate.ty_of_head | |
+| Saturate.ty_of_headq | |
+| Saturate.ty_of_head | |
 
 ### Array
 
