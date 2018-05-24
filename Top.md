@@ -49,8 +49,8 @@ type foo = Foo of int | Bar of bool
 
 | 関数名 | コメント |
 |--------|----------|
-| [Conversion.register_nt](./Hashtbl.md#register_nt) | Hashtblのmembership. *1 |
-| [Conversion.lookup_ntid](./Hashtbl.md#lookup_ntid) | Hashtblのmembership. *1 |
+| [Conversion.register_nt](./Hashtbl.md#register_nt) | Hashtblのmembership. \*1 |
+| [Conversion.lookup_ntid](./Hashtbl.md#lookup_ntid) | Hashtblのmembership. \*1 |
 | Cegen.evaluate_eterm | TODO (assertionが沢山ある) |
 | [Scc.take_from_visited](./Reference.md#take_from_visited) | `int list ref`へのmembership |
 | [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | ADTとの組み合わせ |
@@ -59,10 +59,10 @@ type foo = Foo of int | Bar of bool
 | Ai.state2id | Hashtblの単純なmembership |
 | Ai.register_newnode | Hashtblの単純なmembership |
 | Saturate.tyseq_mem | [難しい方のADT](#代数的データ型固有の述語)との組み合わせ |
-| Saturate.tyseq_subsumed | `[2]` |
-| Saturate.tyseq_add_wo_subtyping ||
-| Saturate.tyseq_rem_subtyping_aux ||
-| Saturate.tyseq_merge_tys ||
+| Saturate.tyseq_subsumed | \*2 |
+| Saturate.tyseq_add_wo_subtyping | \*2 |
+| Saturate.tyseq_rem_subtyping_aux | \*2 |
+| Saturate.tyseq_merge_tys | \*2 |
 
 \*1: HorSat2への入力次第ではfailを避けられない  
 \*2: [代数的データ型固有の述語](#代数的データ型固有の述語)との組み合わせ
