@@ -18,52 +18,25 @@ type foo = Foo of int | Bar of bool
             is_Bar f && not (un_Bar f) }
 ```
 
-| 関数名                                                                  | コメント                                          |
-|-------------------------------------------------------------------------|---------------------------------------------------|
-| [Cegen.mk_ehead](./ADT_easy.md#mk_ehead)                                | 単純                                              |
-| [Cegen.lookup_headty](./List.mem.md#lookup_headty)                      | List.memとの組み合わせ                            |
-| [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode)               | 参照との組み合わせ（deref後にパターンマッチする） |
-| Ai.term2head                                                            |                                                   |
-| Ai.childnodes                                                           |                                                   |
-| [Ai.nt_in_term_with_linearity](./ADT_easy.md#nt_in_term_with_linearity) |                                                   |
-
-
-<!--
-
-+
-    + 単純
-
-+ [Cegen.lookup_headty](./List.mem.md#lookup_headty)
-    + List.memとの組み合わせ
-
-+ [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode)
-    + 参照との組み合わせ（deref後にパターンマッチする）
-
-+ Ai.term2head
-    + 単純
-
-+ Ai.childnodes
-    + 単純
-
--->
-
+| 関数名 | コメント |
+|--------|----------|
+| [Cegen.mk_ehead](./ADT_easy.md#mk_ehead) | 単純 |
+| [Cegen.lookup_headty](./List.mem.md#lookup_headty) | List.memとの組み合わせ |
+| [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | 参照との組み合わせ（deref後にパターンマッチする） |
+| Ai.term2head | |
+| Ai.childnodes | |
+| [Ai.nt_in_term_with_linearity](./ADT_easy.md#nt_in_term_with_linearity) | |
 
 ## 本質的な拡張が必要なもの
 
 ### List.mem
 
-+ [Scc.split_list_at](./List.mem.md#split_list_at)
-    + 再帰
-
-+ Grammar.find_dep
-    + `List.assoc`を使うだけ
-
-+ [Cegen.lookup_headty](./List.mem.md#lookup_headty)
-    + ADTのパターンマッチと組み合わせ
-
-+ [Ai.add_binding_st](./List.mem.md#add_binding_st)
-    + Referenceとの組み合わせ: `List.assoc rho' (!binding_array_nt).(f)`
-    + TODO 難しそう
+| 関数名 | コメント |
+|--------|----------|
+| [Scc.split_list_at](./List.mem.md#split_list_at) | 再帰 |
+| Grammar.find_dep | `List.assoc`を使うだけ |
+| [Cegen.lookup_headty](./List.mem.md#lookup_headty) | ADTのパターンマッチと組み合わせ |
+| [Ai.add_binding_st](./List.mem.md#add_binding_st) | Referenceとの組み合わせ: `List.assoc rho' (!binding_array_nt).(f)` |
 
 ### List.exists
 
