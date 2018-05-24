@@ -58,7 +58,7 @@ type foo = Foo of int | Bar of bool
 | Ai.id2state | Hashtblの単純なmembership |
 | Ai.state2id | Hashtblの単純なmembership |
 | Ai.register_newnode | Hashtblの単純なmembership |
-| Saturate.tyseq_mem | [難しい方のADT](#代数的データ型固有の述語)との組み合わせ |
+| Saturate.tyseq_mem | \*2 |
 | Saturate.tyseq_subsumed | \*2 |
 | Saturate.tyseq_add_wo_subtyping | \*2 |
 | Saturate.tyseq_rem_subtyping_aux | \*2 |
