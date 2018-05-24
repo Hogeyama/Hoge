@@ -42,47 +42,28 @@ type foo = Foo of int | Bar of bool
 
 | 関数名 | コメント |
 |--------|----------|
-| [Grammar.find_sc](./List.mem.md#find_sc) | `List.find (List.mem f)`に相当, unionへのmembershipに帰着できる |
+| [Grammar.find_sc](./List.mem.md#find_sc) | `List.find (List.mem f)`に相当, unionへのmembershipに帰着できそう |
 | [Saturate.ty_of_var](./List.mem.md#ty_of_var) | `List.find (fun (i,j) -> (i < k && k < j))`に相当 |
 
 ### Reference, Hashtbl
 
-+ [Conversion.register_nt](./Hashtbl.md#register_nt)
-    + Hashtblのmembership
-    + HorSat2への入力次第ではfailを避けられない
+| [Conversion.register_nt](./Hashtbl.md#register_nt) | Hashtblのmembership. [^1] |
+| [Conversion.lookup_ntid](./Hashtbl.md#lookup_ntid) | Hashtblのmembership. [^1] |
+| Cegen.evaluate_eterm | TODO (assertionが沢山ある) |
+| [Scc.take_from_visited](./Reference.md#take_from_visited) | `int list ref`へのmembership |
+| [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | ADTとの組み合わせ |
+| [Ai.add_binding_st](./List.mem.md#add_binding_st) | `List.assoc rho' (!binding_array_nt).(f)`. 難しそう |
+| Ai.id2state | Hashtblの単純なmembership |
+| Ai.state2id | Hashtblの単純なmembership |
+| Ai.register_newnode | Hashtblの単純なmembership |
+| Saturate.tyseq_mem | [難しい方のADT](#代数的データ型固有の述語)との組み合わせ |
+| Saturate.tyseq_subsumed | [^2] |
+| Saturate.tyseq_add_wo_subtyping ||
+| Saturate.tyseq_rem_subtyping_aux ||
+| Saturate.tyseq_merge_tys ||
 
-+ [Conversion.lookup_ntid](./Hashtbl.md#lookup_ntid)
-    + Hashtblのmembership
-    + HorSat2への入力次第ではfailを避けられない
-
-+ Cegen.evaluate_eterm
-    + TODO (assertionが沢山ある)
-
-+ [Scc.take_from_visited](./Reference.md#take_from_visited)
-    + `int list ref`へのmembership
-
-+ [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode)
-    + ADTとの組み合わせ
-
-+ [Ai.add_binding_st](./List.mem.md#add_binding_st)
-    + `List.assoc rho' (!binding_array_nt).(f)`
-    + 難しそう
-
-+ Ai.id2state
-    + Hashtblの単純なmembership
-
-+ Ai.state2id
-    + Hashtblの単純なmembership
-
-+ Ai.register_newnode
-    + Hashtblの単純なmembership
-
-+ Saturate.tyseq_mem
-+ Saturate.tyseq_subsumed
-+ Saturate.tyseq_add_wo_subtyping
-+ Saturate.tyseq_rem_subtyping_aux
-+ Saturate.tyseq_merge_tys
-    + 以上5個は[難しい方のADT](#代数的データ型固有の述語)との組み合わせ
+[^1]: HorSat2への入力次第ではfailを避けられない
+[^2]: [代数的データ型固有の述語](#代数的データ型固有の述語)との組み合わせ
 
 ### 代数的データ型固有の述語
 
