@@ -21,7 +21,7 @@ type foo = Foo of int | Bar of bool
 | 関数名 | コメント |
 |--------|----------|
 | [Cegen.mk_ehead](./ADT_easy.md#mk_ehead) | 単純 |
-| [Cegen.lookup_headty](./List.mem.md#lookup_headty) | List.memとの組み合わせ |
+| [Cegen.lookup_headty](./List.md#lookup_headty) | List.memとの組み合わせ |
 | [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | 参照との組み合わせ（deref後にパターンマッチする） |
 | Ai.term2head | |
 | Ai.childnodes | |
@@ -33,17 +33,17 @@ type foo = Foo of int | Bar of bool
 
 | 関数名 | コメント |
 |--------|----------|
-| [Scc.split_list_at](./List.mem.md#split_list_at) | 再帰 |
+| [Scc.split_list_at](./List.md#split_list_at) | 再帰 |
 | Grammar.find_dep | `List.assoc`を使うだけ |
-| [Cegen.lookup_headty](./List.mem.md#lookup_headty) | ADTのパターンマッチと組み合わせ |
-| [Ai.add_binding_st](./List.mem.md#add_binding_st) | Referenceとの組み合わせ: `List.assoc rho' (!binding_array_nt).(f)` |
+| [Cegen.lookup_headty](./List.md#lookup_headty) | ADTのパターンマッチと組み合わせ |
+| [Ai.add_binding_st](./List.md#add_binding_st) | Referenceとの組み合わせ: `List.assoc rho' (!binding_array_nt).(f)` |
 
 ### List.exists
 
 | 関数名 | コメント |
 |--------|----------|
-| [Grammar.find_sc](./List.mem.md#find_sc) | `List.find (List.mem f)`に相当, unionへのmembershipに帰着できそう |
-| [Saturate.ty_of_var](./List.mem.md#ty_of_var) | `List.find (fun (i,j) -> (i < k && k < j))`に相当 |
+| [Grammar.find_sc](./List.md#find_sc) | `List.find (List.mem f)`に相当, unionへのmembershipに帰着できそう |
+| [Saturate.ty_of_var](./List.md#ty_of_var) | `List.find (fun (i,j) -> (i < k && k < j))`に相当 |
 
 ### Reference, Hashtbl
 
@@ -54,7 +54,7 @@ type foo = Foo of int | Bar of bool
 | Cegen.evaluate_eterm | TODO (assertionが沢山ある) |
 | [Scc.take_from_visited](./Reference.md#take_from_visited) | `int list ref`へのmembership |
 | [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | ADTとの組み合わせ |
-| [Ai.add_binding_st](./List.mem.md#add_binding_st) | `List.assoc rho' (!binding_array_nt).(f)`. 難しそう |
+| [Ai.add_binding_st](./List.md#add_binding_st) | `List.assoc rho' (!binding_array_nt).(f)`. 難しそう |
 | Ai.id2state | Hashtblの単純なmembership |
 | Ai.state2id | Hashtblの単純なmembership |
 | Ai.register_newnode | Hashtblの単純なmembership |
