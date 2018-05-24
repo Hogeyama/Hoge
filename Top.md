@@ -22,9 +22,11 @@ type foo = Foo of int | Bar of bool
 -------------------------------------------|----------|
 | [Cegen.mk_ehead](./ADT_easy.md#mk_ehead) | 単純     |
 | [Cegen.lookup_headty](./List.mem.md#lookup_headty) | List.memとの組み合わせ |
-| [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | 参照との組み合わせ（deref後にパターンマッチする） |
+| [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | \
+    参照との組み合わせ（deref後にパターンマッチする） |
 | Ai.term2head | |
 | Ai.childnodes | |
+| [Ai.nt_in_term_with_linearity](./ADT_easy.md#nt_in_term_with_linearity) | |
 
 
 <!--
@@ -46,7 +48,6 @@ type foo = Foo of int | Bar of bool
 
 -->
 
-+ [Ai.nt_in_term_with_linearity](./ADT_easy.md#nt_in_term_with_linearity)
 
 ## 本質的な拡張が必要なもの
 
