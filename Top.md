@@ -40,11 +40,10 @@ type foo = Foo of int | Bar of bool
 
 ### List.exists
 
-+ [Grammar.find_sc](./List.mem.md#find_sc)
-    + `List.find (fun x -> List.mem f x) scc`
-    + unionへのmembershipに帰着できる
-
-+ [Saturate.ty_of_var](./List.mem.md#ty_of_var)
+| 関数名 | コメント |
+|--------|----------|
+| [Grammar.find_sc](./List.mem.md#find_sc) | `List.find (List.mem f)`に相当, unionへのmembershipに帰着できる |
+| [Saturate.ty_of_var](./List.mem.md#ty_of_var) | `List.find (fun (i,j) -> (i < k && k < j))`に相当 |
 
 ### Reference, Hashtbl
 
