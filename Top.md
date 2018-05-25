@@ -61,7 +61,7 @@ ty_of_* は ty_of_var(ヤバイ)を呼ぶが
 |--------|----------|
 | [Conversion.register_nt](./Hashtbl.md#register_nt) | Hashtblのmembership. \*1 |
 | [Conversion.lookup_ntid](./Hashtbl.md#lookup_ntid) | Hashtblのmembership. \*1 |
-| Cegen.evaluate_eterm | TODO (assertionが沢山ある) |
+| Cegen.evaluate_eterm | assertionが沢山ある．難しそう |
 | [Scc.take_from_visited](./Reference.md#take_from_visited) | `int list ref`へのmembership |
 | [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | ADTとの組み合わせ |
 | [Ai.add_binding_st](./List.md#add_binding_st) | `List.assoc rho' (!binding_array_nt).(f)`. 難しそう |
