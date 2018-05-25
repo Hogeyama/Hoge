@@ -30,7 +30,7 @@ type foo = Foo of int | Bar of bool
 | Saturate.ty_of_headq | |
 | Saturate.ty_of_head | |
 
-<!-- ty_of_* は ty_of_var(ヤバイ)を呼ぶが
+<!-- ty_of_* は ty_of_var(ヤバイ)を呼ぶが 
      ただ呼ぶだけなので問題視しないで良いはず -->
 
 ## 本質的な拡張が必要なもの
