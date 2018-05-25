@@ -68,14 +68,13 @@ ty_of_* は ty_of_var(ヤバイ)を呼ぶが
 | Ai.id2state | Hashtblの単純なmembership |
 | Ai.state2id | Hashtblの単純なmembership |
 | Ai.register_newnode | Hashtblの単純なmembership |
-| [Saturate.tyseq_mem](./ADT_difficult.md#tyseq_mem) | \*2 |
-| Saturate.tyseq_subsumed | \*2 |
-| Saturate.tyseq_add_wo_subtyping | \*2 |
-| Saturate.tyseq_rem_subtyping_aux | \*2 |
-| Saturate.tyseq_merge_tys | \*2 |
+| [Saturate.tyseq_mem](./ADT_difficult.md#tyseq_mem) | [代数的データ型固有の述語](#代数的データ型固有の述語)との組み合わせ |
+| Saturate.tyseq_subsumed | 同上 |
+| Saturate.tyseq_add_wo_subtyping | 同上 |
+| Saturate.tyseq_rem_subtyping_aux | 同上 |
+| Saturate.tyseq_merge_tys | 同上 |
 
 \*1: HorSat2への入力次第ではfailを避けられない  
-\*2: [代数的データ型固有の述語](#代数的データ型固有の述語)との組み合わせ
 
 ### 代数的データ型固有の述語
 
