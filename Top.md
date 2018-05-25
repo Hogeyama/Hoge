@@ -11,7 +11,7 @@
 type foo = Foo of int | Bar of bool
 ```
 
-に対して次のようなrefinement typeが書ける必要がある．
+に対して次のようなrefinement typeが書ければよい．
 
 ```
 { f : foo | is_Foo f && un_Foo f > 0 ||
@@ -23,9 +23,15 @@ type foo = Foo of int | Bar of bool
 | [Cegen.mk_ehead](./ADT_easy.md#mk_ehead) | 単純 |
 | [Cegen.lookup_headty](./List.md#lookup_headty) | List.memとの組み合わせ |
 | [Ai.expand_varheadnode](./ADT_easy.md#expand_varheadnode) | 参照との組み合わせ（deref後にパターンマッチする） |
-| Ai.term2head | |
-| Ai.childnodes | |
+| Ai.term2head | 単純 |
+| Ai.childnodes | 単純 |
 | [Ai.nt_in_term_with_linearity](./ADT_easy.md#nt_in_term_with_linearity) | |
+| Saturate.ty_of_head | |
+| Saturate.ty_of_headq | |
+| Saturate.ty_of_head | |
+
+<!-- ty_of_* は ty_of_var(ヤバイ)を呼ぶが
+     ただ呼ぶだけなので問題視しないで良いはず -->
 
 ## 本質的な拡張が必要なもの
 
@@ -72,6 +78,7 @@ type foo = Foo of int | Bar of bool
 たとえば
 
 ```
+(* grammer.ml *)
 type ity = ItyQ of state
          | ItyFun of a * b * ity
 ```
@@ -89,22 +96,18 @@ arity = function
 | 関数名 | コメント |
 |--------|----------|
 | [Cegen.mk_vte](./ADT_difficult.md#mk_vte) | arity |
+| Saturate.split_ity | 同上 |
+| Saturate.get_range | 同上  |
+| Saturate.get_argtys | 同上 |
 | Conversion.pterm2term | |
 | Conversion.elim_fun_from_head | |
-| Saturate.split_ity | arity |
-| Saturate.get_range | arity (同上) |
-| Saturate.get_argtys | arity (同上) |
-| Saturate.tyseq_mem | 参照と再帰も関係する |
-| Saturate.tyseq_subsumed | 参照と再帰も関係する |
-| Saturate.tyseq_merge_tys | 参照と再帰も関係する |
-| Saturate.ty_of_head | |
-| Saturate.ty_of_headq | |
-| Saturate.ty_of_head | |
+| [Saturate.tyseq_mem](./ADT_difficult.md#tyseq_mem) | 参照と再帰も関係する |
+| Saturate.tyseq_subsumed | 同上 |
+| Saturate.tyseq_merge_tys | 同上 |
 
 ### Array
 
-arrayへのアクセス`arr.(i)`はindex out of bound例外を投げることを忘れていた．
-調べ直します．
+arrayへのアクセス`arr.(i)`はindex out of bound例外を投げることを忘れていたので調べ直します．
 
 ### TODO
 

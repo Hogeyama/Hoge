@@ -1,4 +1,5 @@
 
+データ型固有の述語が必要になる例
 
 <a name = "mk_vte"></a>
 ### Cegen.mk_vte
@@ -47,4 +48,31 @@ f : F int -> int
 f = [ fun _ -> 0 | fun (_,_,x) -> 1 + x ]
 arity = fold_F f
 ```
+
+<a name = "tyseq_mem"></a>
+### Saturate.tyseq_mem
+
+これはむりなのでは
+
+```
+type tyseq = TySeq of (Grammar.ty * tyseq ref) list | TySeqNil
+let rec tyseq_mem tys tyseqref =
+  match tys with
+    [] -> true
+  | ty::tys' ->
+      begin match !tyseqref with
+      | TySeqNil -> assert false (* size of the type sequence does not match *)
+      | TySeq(tyseqlist) ->
+          try
+            let tyseqref1 = Utilities.assoc_eq eq_ty ty tyseqlist in
+              tyseq_mem tys' tyseqref1
+          with
+            Not_found -> false
+      end
+```
+
+
+
+
+
 
