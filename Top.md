@@ -68,7 +68,7 @@ ty_of_* は ty_of_var(ヤバイ)を呼ぶが
 | Ai.id2state | Hashtblの単純なmembership |
 | Ai.state2id | Hashtblの単純なmembership |
 | Ai.register_newnode | Hashtblの単純なmembership |
-| Saturate.tyseq_mem | \*2 |
+| [Saturate.tyseq_mem](./ADT_difficult.md#tyseq_mem) | \*2 |
 | Saturate.tyseq_subsumed | \*2 |
 | Saturate.tyseq_add_wo_subtyping | \*2 |
 | Saturate.tyseq_rem_subtyping_aux | \*2 |

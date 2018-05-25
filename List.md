@@ -67,12 +67,12 @@ let add_binding_st f rho qs =
 ```ocaml grammar.ml
 type find_sc
   :  (f : int)
-  -> {scc : int list list | List.mem f (List.concat scc) }
+  -> { scc : int list list | List.mem f (List.concat scc) }
   -> int list
 let find_sc f scc =
   let scc' = List.filter (fun x-> List.mem f x) scc in
     match scc' with
-      [] -> assert false
+    | [] -> assert false
     | sc::_ -> sc
 ```
 
