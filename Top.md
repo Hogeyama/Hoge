@@ -26,16 +26,20 @@ type foo = Foo of int | Bar of bool
 | Ai.term2head | 単純 |
 | Ai.childnodes | 単純 |
 | [Ai.nt_in_term_with_linearity](./ADT_easy.md#nt_in_term_with_linearity) | |
-| Saturate.ty_of_head | |
-| Saturate.ty_of_headq | |
-| Saturate.ty_of_head | |
+| Saturate.ty_of_head | 単純 |
+| Saturate.ty_of_headq | 単純 |
+| Saturate.ty_of_head | 単純 |
 
-<!-- ty_of_* は ty_of_var(ヤバイ)を呼ぶが 
-     ただ呼ぶだけなので問題視しないで良いはず -->
+<!--
+ty_of_* は ty_of_var(ヤバイ)を呼ぶが
+ただ呼ぶだけなので問題視しないで良いはず
+-->
 
 ## 本質的な拡張が必要なもの
 
 ### List.mem
+
+`List.mem`や`List.mem_assoc`．Set theoryを入れる
 
 | 関数名 | コメント |
 |--------|----------|
@@ -99,11 +103,11 @@ arity = function
 | Saturate.split_ity | 同上 |
 | Saturate.get_range | 同上  |
 | Saturate.get_argtys | 同上 |
-| Conversion.pterm2term | |
-| Conversion.elim_fun_from_head | |
-| [Saturate.tyseq_mem](./ADT_difficult.md#tyseq_mem) | 参照と再帰も関係する |
+| [Saturate.tyseq_mem](./ADT_difficult.md#tyseq_mem) | 参照と再帰も関係する．難しそう |
 | Saturate.tyseq_subsumed | 同上 |
 | Saturate.tyseq_merge_tys | 同上 |
+| Conversion.pterm2term | |
+| Conversion.elim_fun_from_head | |
 
 ### Array
 

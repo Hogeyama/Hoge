@@ -52,7 +52,7 @@ arity = fold_F f
 <a name = "tyseq_mem"></a>
 ### Saturate.tyseq_mem
 
-これはむりなのでは
+(Saturate.tyseq_subsumed, Saturate.tyseq_merge_tys)
 
 ```
 type tyseq = TySeq of (Grammar.ty * tyseq ref) list | TySeqNil
@@ -70,6 +70,34 @@ let rec tyseq_mem tys tyseqref =
             Not_found -> false
       end
 ```
+
+tyseqは`Grammar.ty`でラベル付けされた木と考えられる．
+上の関数は`tys`でラベル付けされたパスが`tyseqref`にあるかどうかを判定する．
+depthで捉えられるかもしれない？
+
+```
+min_depth : tyseq -> int
+min_depth = function
+  | TySeqNil -> 0
+  | TySeq xs = List.min @@ List.map (min_depth . deref . snd) xs
+
+(* where *)
+(f . g) x = f (g x)
+deref x = !x
+```
+
+とすれば `tyseq_mem`には次の型が付くが，呼び出しが常にこの事前条件を満たしているか分からない．
+ざっと
+
+```
+type tyseq_mem
+  :  (tys : Grammar.ty list)
+  -> { tyseqref : tyseqref | min_depth (!tyseqref) >= List.length tys }
+```
+
+
+
+
 
 
 
