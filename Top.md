@@ -105,8 +105,8 @@ arity = function
 | [Saturate.tyseq_mem](./ADT_difficult.md#tyseq_mem) | 参照と再帰も関係する．難しそう |
 | Saturate.tyseq_subsumed | 同上 |
 | Saturate.tyseq_merge_tys | 同上 |
-| Conversion.pterm2term | |
-| Conversion.elim_fun_from_head | |
+| [Conversion.pterm2term](./ADT_difficult.md#pterm2term) | |
+| Conversion.elim_fun_from_head | pterm2termと似ている |
 
 ### Array
 

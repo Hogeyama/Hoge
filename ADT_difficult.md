@@ -97,12 +97,54 @@ type tyseq_mem
   -> { tyseqref : tyseqref | min_depth (!tyseqref) >= List.length tys }
 ```
 
+<a name = "pterm2term"></a>
+### Conversion.pterm2term
 
+```ocaml
+(* syntax.ml *)
+type head = Name of string
+          | NT of string
+          | FD of int
+          | CASE of int
+          | PAIR
+          | DPAIR
+          | FUN of string list * preterm
+and preterm = PTapp of head * preterm list
+(* conversion.ml *)
+let rec pterm2term vmap pterm =
+  (** distinguish between variables and terminal symbols **)
+  match pterm with
+    Syntax.PTapp(h, pterms) ->
+      let h' =
+        match h with
+        | Syntax.Name(s) -> (try Var(List.assoc s vmap) with Not_found -> T(s))
+        | Syntax.NT(s) -> NT(lookup_ntid s)
+        | Syntax.FUN(_,_) -> assert false
+        | Syntax.CASE(n) -> assert false
+        | Syntax.FD(n) -> assert false
+        | Syntax.PAIR -> assert false
+        | Syntax.DPAIR -> assert false
+     in
+     let terms = List.map (pterm2term vmap) pterms in
+     let terms' = if !(Flags.normalize) then
+                    List.map normalize_term terms
+                  else terms
+     in
+        mk_app h' terms'
+```
 
+必要な述語とそれを使った仕様
 
+```ocaml
+head_p : head -> bool
+head_p = function
+  | Syntax.Name(_) -> true
+  | Syntax.NT(_) -> true
+  | _ -> false
+pterm_p : pterm -> bool
+pterm_p (PTapp(h,pterms)) = head_p && List.for_all pterm_p pterms
 
-
-
-
+type pterm2term : (vmap : _) -> { pterm: pterm | pterm_p pterm } -> Grammar.term
+```
 
 
