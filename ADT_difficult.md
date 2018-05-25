@@ -4,7 +4,7 @@
 <a name = "mk_vte"></a>
 ### Cegen.mk_vte
 
-```
+```ocaml
 type ity = ItyQ of state
          | ItyFun of a * b * ity
 let rec mk_vte vars at =
@@ -24,24 +24,24 @@ let rec mk_vte vars at =
 
 ここで
 
-```
+```ocaml
 arity = function
         | ItyQ(_) -> 0
         | ItyFun(_,_,aty) -> 1 + arity aty
 ```
 
-という関数を定義すると
+という関数を定義すると仕様は次のように書ける.
 
-```
+```ocaml
 type mk_vte
   :  (vars: 'a list)
   -> {at: ity | List.length vars <= arity at }
   -> _
 ```
 
-と書ける.
+この`arity`はfoldingになっている．
 
-```
+```ocaml
 type F x = int + int * int * x
 type ity = Fix F
 f : F int -> int
@@ -54,7 +54,7 @@ arity = fold_F f
 
 (Saturate.tyseq_subsumed, Saturate.tyseq_merge_tys)
 
-```
+```ocaml
 type tyseq = TySeq of (Grammar.ty * tyseq ref) list | TySeqNil
 let rec tyseq_mem tys tyseqref =
   match tys with
@@ -75,9 +75,8 @@ tyseqは`Grammar.ty`でラベル付けされた木と考えられる．
 上の関数は`tys`でラベル付けされたパスが`tyseqref`にあるかどうかを判定する．
 depthで捉えられるかもしれない？
 
-```
-min_depth : tyseq -> int
-min_depth = function
+```ocaml
+min_depth : tyseq -> int = function
   | TySeqNil -> 0
   | TySeq xs = List.min @@ List.map (min_depth . deref . snd) xs
 
