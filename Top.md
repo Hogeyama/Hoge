@@ -29,6 +29,7 @@ type foo = Foo of int | Bar of bool
 | Saturate.ty_of_head | 単純 |
 | Saturate.ty_of_headq | 単純 |
 | Saturate.ty_of_head | 単純 |
+| [Cegen.string_of_path](./ADT_easy.md#string_of_path) | 難しくはないはず |
 
 <!--
 ty_of_* は ty_of_var(ヤバイ)を呼ぶが
@@ -107,6 +108,7 @@ arity = function
 | Saturate.tyseq_merge_tys | 同上 |
 | [Conversion.pterm2term](./ADT_difficult.md#pterm2term) | |
 | Conversion.elim_fun_from_head | pterm2termと似ている |
+| [Pobdd.make_node](./ADT_difficult.md#make_node) | |
 
 ### Array
 
@@ -114,12 +116,12 @@ arrayへのアクセス`arr.(i)`はindex out of bound例外を投げることを
 
 ### TODO
 
-+ Cegen.evaluate_eterm
-+ Cegen.find_derivation
-+ Cegen.merge_tree
-+ Cegen.string_of_path
-+ Cegen.mk_env
-+ Pobdd.make_node
+<!--
++ [Cegen.find_derivation](./Sonota.md#find_derivation)
+    + これはfailしない？
+-->
++ [Cegen.merge_tree](./Sonota.md#merge_tree)
++ [Cegen.mk_env](./Sonota.md#mk_env)
 
 <!--# 相互再帰の型-->
 

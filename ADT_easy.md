@@ -5,7 +5,7 @@
 type foo = Foo of int | Bar of bool
 ```
 
-に対して次のようなrefinement typeが書ける必要がある．
+に対して次のようなrefinement typeが書ければよい．
 
 ```
 { f : foo | is_Foo f && un_Foo f > 0 ||
@@ -88,28 +88,27 @@ let rec decompose_term t =
      let (h,ts)=decompose_term t1 in (h,ts@[t2])
 ```
 
+<a name = "string_of_path"></a>
+### Cegem.string_of_path
 
+```ocaml
+type find_nonbot
+  : tree list -> { i: int | i > 0 } -> { (r, t) : int * tree | r = 0 || is_Node t }
+let rec find_nonbot tl i =
+  match tl with
+  | [] -> (0, Bottom)
+  | t::tl' ->
+      match t with
+      | Bottom -> find_nonbot tl' (i+1)
+      | Node(_,_) -> (i, t)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+type string_of_path : { t : tree | is_Node t } -> string
+let rec string_of_path t =
+  match t with
+  | Node(a,tl) ->
+      let (i,t') = find_nonbot tl 1 in
+        if i=0 then ("("^a^",0)")
+        else "("^a^","^(string_of_int i)^")"^(string_of_path t')
+  | _ -> assert false
+```
 

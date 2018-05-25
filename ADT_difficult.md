@@ -147,4 +147,36 @@ pterm_p (PTapp(h,pterms)) = head_p && List.for_all pterm_p pterms
 type pterm2term : (vmap : _) -> { pterm: pterm | pterm_p pterm } -> Grammar.term
 ```
 
+<a name = "make_node"></a>
+### Pobdd.make_node
+
+`node_id`を述語に書けるようにする必要
+
+```ocaml
+type bdd = Node of var * bdd * bdd * id * var list
+         | Leaf of bool
+
+let node_id = function
+  | Leaf(true) -> 0
+  | Leaf(false) -> 1
+  | Node(_,_,_,x,_) -> x;;
+
+let make_node (v,t1,t2) =
+  let i1 = node_id t1 in
+  let i2 = node_id t2 in
+  let key = (v,i1,i2) in
+  assert (i1 <> i2);
+  try
+    NodeHash.find node_hashtbl key
+  with Not_found -> begin
+    let i = gen_id () in
+    let l1 = bdd_vars t1 in
+    let l2 = bdd_vars t2 in
+    let l = merge_vars l1 l2 in
+    let t = Node (v,t1,t2,i,v::l) in
+    NodeHash.add node_hashtbl key t;
+    t
+  end;;
+```
+
 
