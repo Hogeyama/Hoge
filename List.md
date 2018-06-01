@@ -98,3 +98,8 @@ let rec ty_of_var venv (f,i) =
     else ty_of_var venv' (f,i)
 ```
 
++ 案
+    + `i`でパラメトライズされたcatamorphismを使う
+    + `List.exist`（に対応するもの）をSMTソルバーでそのまま使う
+        + この場合決定性は失うことになる
+

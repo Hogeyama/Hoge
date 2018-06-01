@@ -9,6 +9,7 @@
 <!-- 呼び出し元 evaluate_eterms が何をやっているか良くわからない -->
 
 ```ocaml
+type tree = Node of string * tree list | Bottom
 let rec merge_tree t1 t2 =
   match (t1,t2) with
   | (Bottom,_) -> t2
@@ -20,6 +21,11 @@ let rec merge_tree t1 t2 =
 and merge_trees ts1 ts2 =
   List.map (fun (t1,t2)->merge_tree t1 t2) (List.combine ts1 ts2)
 ```
+
+#### 案
+
++ labelが等しいという性質はrelational propertyに帰着
++ arityが等しいという性質は木のデータ構造にarityの情報を持たせることで対応
 
 <a name = "mk_env"></a>
 ### Cegen.mk_env

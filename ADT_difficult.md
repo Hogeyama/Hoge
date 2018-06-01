@@ -57,7 +57,7 @@ arity = cata f
 type tyseq = TySeq of (Grammar.ty * tyseq ref) list | TySeqNil
 let rec tyseq_mem tys tyseqref =
   match tys with
-    [] -> true
+  | [] -> true
   | ty::tys' ->
       begin match !tyseqref with
       | TySeqNil -> assert false (* size of the type sequence does not match *)
@@ -73,7 +73,9 @@ let rec tyseq_mem tys tyseqref =
 tyseqは`Grammar.ty`でラベル付けされた木と考えられる．
 上の関数は`tys`でラベル付けされたパスが`tyseqref`にあるかどうかを判定する．
 
-#### depthで捉えられる？
+
+#### 仕様の記述
+
 
 ```ocaml
 min_depth : tyseq -> int = function
@@ -85,17 +87,20 @@ min_depth : tyseq -> int = function
 deref x = !x
 ```
 
-とすれば `tyseq_mem`には次の型が付くが，呼び出しが常にこの事前条件を満たしているか分からない．
-
-<!--
-ざっと見た所，tyseq_add_wo_subtyping後は満たしてないような気がする．Not_foundのケース
--->
+上記のcatamorphismを考えれば次のような仕様が書ける．
+実際にプログラム中の`tyseq`は常にこの仕様を満たしている模様．
 
 ```
 type tyseq_mem
   :  (tys : Grammar.ty list)
   -> { tyseqref : tyseqref | min_depth (!tyseqref) >= List.length tys }
 ```
+
+#### 問題点
+
+`type tyseq = TySeq of (Grammar.ty * tyseq ref) list | TySeqNil`の`ref`が，
+これまで考えていた方法（store-passing，または`ref`を非決定的な関数とみなす）では扱えない．
+当面保留にする．
 
 <a name = "pterm2term"></a>
 ### Conversion.pterm2term
