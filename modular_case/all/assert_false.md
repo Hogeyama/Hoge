@@ -252,9 +252,6 @@
 
 + `Stype.arity2sty`
   + 検証できそう → [詳細](../likely_to_be_verified.md#stypearity2sty)
-  + caller
-      + `alpha2cste`
-        直前で n < 0 でないことをcheckしているので行ける
 
 + `Type.lookup_cte`
   + `Hashtbl`
