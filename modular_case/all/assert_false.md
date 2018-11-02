@@ -36,7 +36,7 @@
 
 + `Ai.expand_varheadnode`
 
-    + referenceから
+    + reference
 
 
 + `Ai.add_binding_st`
@@ -62,7 +62,6 @@
 + `Ai.nt_in_term_with_linearity`
 
     + 検証できそう → [詳細](../can_be_verified.md#aint_in_term_with_linearity)
-    + decompose_termの直後に呼んでいるので
 
 + `Cegen.mk_vte`
 
@@ -74,16 +73,43 @@
 
 + `Cegen.lookup_headty`
 
-    + `Var(x)`の方
-        + List.assoc
-    + `_`の方
-        + `Cegen.mk_ehead`と同じ
-        + 検証できそう
+    + `assert false`が二つ
+    + 片方は検証できそう → [詳細](../can_be_verified.md#cegenlookup_headty)
 
 + `Cegen.register_backchain`
 
-    + `find_derivation`が`Not_found`を投げないことを示すのは難しい
+    + `find_derivation`が`Not_found`を投げないことを示す必要があり難しい
         + 特に`List.iter`の辺り
+
+          ```
+          let register_backchain f ity ntyid =
+            let (arity,body) = lookup_rule f in
+            let vars = mk_vars f arity in
+            let (vte,rty) = mk_vte vars ity in
+            let eterm = try find_derivation ntyid vte body rty
+              with Not_found ->
+                (print_string ("failed to find a derivation for "^(name_of_nt f)^":");
+                 Type.print_ity ity; assert false)
+            in
+            Hashtbl.add tracetab (f,ity) (vte,eterm)
+
+            let rec find_derivation ntyid vte term aty =
+              let (h,terms) = Grammar.decompose_term term in
+              let k = List.length terms in
+              let head_typings = find_headtype ntyid vte h aty k in
+              try
+                List.iter (fun (eh,aty0) -> (* ここ *)
+                    try
+                      let (eterms,rty) = find_derivation_terms ntyid vte terms aty0 in
+                      let eterm1 = compose_eterm eh eterms in
+                      let eterm2 =
+                        if rty=aty then eterm1
+                        else ECoerce(rty,aty,eterm1)
+                      in raise (Found eterm2)
+                    with Not_found -> ()
+                  ) head_typings; raise Not_found
+              with Found eterm -> eterm
+          ```
 
 + `Cegen.mk_env`
 
@@ -104,8 +130,6 @@
     + `find_ce`の返り値のterm`t`がpathになっていることを示す（難しい）
 
 + `Conversion.pterm2term`
-
-    + `elim_fun_*`を通れば`pterm2term`のassert falseは踏まないはずだが…
 
     + 詳細
 
@@ -159,7 +183,7 @@
 
 + `Conversion.elim_fun_from_head`
 
-    + parserまで遡らないといけない？
+    + parserまで遡らないといけないはず．難しい
 
 + `Grammar.find_dep`
     + `List.assoc`

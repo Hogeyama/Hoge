@@ -187,5 +187,3 @@ utilities.ml|235 col 5| List.assoc var s
 utilities.ml|246 col 18| let env_lookup = List.assoc
 utilities.ml|321 col 9| (* like List.assoc, but with a specialized equality function *)
 
-あとfindもあったっけ
-
