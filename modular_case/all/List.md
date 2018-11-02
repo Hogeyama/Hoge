@@ -4,7 +4,7 @@ hd
 
 + `Ai.mk_binding_depgraph_for_terms`
 
-    + 直前でvarsがnilでないことを確認しているので行ける → [](../can_be_verified.md#Ai__mk_binding_depgraph_for_terms)
+    + 直前でvarsがnilでないことを確認しているので行ける → [詳細](../can_be_verified.md#Ai__mk_binding_depgraph_for_terms)
 
 + `AlternatingAutomaton.from_transitions`
 
@@ -26,7 +26,7 @@ hd
 
 + `Main.report_breakdown`:
     + `let last = if !times=[] then start_t else List.hd !times in`
-    + 検証できそう → [](../can_be_verified.md#Main__report_breakdown)
+    + 検証できそう → [詳細](../can_be_verified.md#Main__report_breakdown)
 
 + `Saturate.register_terms_te`
 
@@ -76,7 +76,7 @@ combine
       (List.combine indices qs);
     ```
 
-    + 検証できそう → [](../can_be_verified.md#Ai__mk_trtab)
+    + 検証できそう → [詳細](../can_be_verified.md#Ai__mk_trtab)
 
 + `Cegen.mk_env`:
     + 難しいやつ
