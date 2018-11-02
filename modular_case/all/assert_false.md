@@ -10,7 +10,7 @@
 + `Ai.merge_statevecs`
 
     + non-nil
-    + 検証できそう → [詳細](../can_be_verified.md#Ai__merge_statevecs)
+    + 検証できそう → [詳細](../can_be_verified.md#aimerge_statevecs)
 
     + 呼び出し:
 
@@ -49,7 +49,7 @@
 
 + `Ai.term2head`
 
-    + 検証できそう → [詳細](../can_be_verified.md#Ai__term2head)
+    + 検証できそう → [詳細](../can_be_verified.md#aiterm2head)
 
 + `Ai.childnodes`
 
@@ -61,7 +61,7 @@
 
 + `Ai.nt_in_term_with_linearity`
 
-    + 検証できそう → [詳細](../can_be_verified.md#Ai__nt_in_term_with_linearity)
+    + 検証できそう → [詳細](../can_be_verified.md#aint_in_term_with_linearity)
     + decompose_termの直後に呼んでいるので
 
 + `Cegen.mk_vte`
@@ -70,7 +70,7 @@
 
 + `Cegen.mk_ehead`
 
-    + 検証できそう → [詳細](../can_be_verified.md#mk_ehead)
+    + 検証できそう → [詳細](../can_be_verified.md#cegenmk_ehead)
 
 + `Cegen.lookup_headty`
 
@@ -191,18 +191,18 @@
     + 同上
 
 + `Saturate.ty_of_head`
-  + 検証できそう → [詳細](../can_be_verified#Saturate__ty_of_head)
+  + 検証できそう → [詳細](../can_be_verified#saturatety_of_head)
   + caller
       + `ty_of_term2`
           + `decompose_term`のパターン
 
 + `Saturate.ty_of_head_q`
-  + 検証できそう → [詳細](../can_be_verified#Saturate__ty_of_head_q)
+  + 検証できそう → [詳細](../can_be_verified#saturatety_of_head_q)
   + caller
       + `match_head_types` -> `check_ty_of_term` で`decompose_term`のパターンに
 
 + `Saturate.ty_of_head_q2`
-  + 同上 → [詳細](../can_be_verified#Saturate__ty_of_head_q2)
+  + 同上 → [詳細](../can_be_verified#saturatety_of_head_q2)
 
 + `Saturate.get_argtys`
   + arityに関する推論．まだできない
@@ -227,7 +227,7 @@
   + 同上
 
 + `Stype.arity2sty`
-  + 検証できそう → [詳細](../can_be_verified.md#Stype__arity2sty)
+  + 検証できそう → [詳細](../can_be_verified.md#stypearity2sty)
   + caller
       + `alpha2cste`
         直前で n < 0 でないことをcheckしているので行ける
