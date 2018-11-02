@@ -21,7 +21,7 @@
 
             + 1箇所目は
 
-              ```
+              ```ocaml
               if qs''=[] then (* states qs have been processed before *)
                 ()
               else begin
@@ -81,7 +81,7 @@
     + `find_derivation`が`Not_found`を投げないことを示す必要があり難しい
         + 特に`List.iter`の辺り
 
-          ```
+          ```ocaml
           let register_backchain f ity ntyid =
             let (arity,body) = lookup_rule f in
             let vars = mk_vars f arity in
@@ -133,7 +133,7 @@
 
     + 詳細
 
-      ```
+      ```ocaml
       let rec pterm2term vmap pterm =
         (* distinguish between variables and terminal symbols **)
         match pterm with

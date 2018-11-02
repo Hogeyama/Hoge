@@ -38,7 +38,7 @@ hd
 
     + callerは`Stype.order_of_nste`:
 
-        ```
+        ```ocaml
         let order_of_nste nste =
           let nste' = indexlist (Array.to_list nste) in
           let ordmap = List.map (fun (nt, sty) -> (nt, order_of_sty sty)) nste' in
@@ -48,7 +48,7 @@ hd
 
         + これのcallerは`Stype.tcheck`:
 
-            ```
+            ```ocaml
             let tcheck g alpha =
               let cste = alpha2cste alpha in
               let num_of_nts = Array.length g.nt in
@@ -67,7 +67,7 @@ combine
 
 + `Ai.mk_trtab`
 
-    ```
+    ```ocaml
     let arity = List.length qs in
     let x = Array.make arity [] in
     let indices = fromto 0 arity in
@@ -82,7 +82,7 @@ combine
     + 難しいやつ
     + callerは`Cegen.evaluate_eterm`:
 
-        ```
+        ```ocaml
         let rec evaluate_eterm eterm env =
           let (h,termss) = decompose_eterm eterm in
           match h with
@@ -107,7 +107,7 @@ combine
 
     + 全然わからん
 
-      ```
+      ```ocaml
       let rec evaluate_eterm eterm env =
         let (h,termss) = decompose_eterm eterm in
         match h with
@@ -130,7 +130,7 @@ combine
     + 検証できそう → TODO
     + callerを見なくてよい
 
-      ```
+      ```ocaml
         let arity = List.length vars in
         let nt = new_ntaux() in
         let subst = List.combine vars (List.map (fun i->Var(nt,i)) (fromto 0 arity)) in
@@ -138,7 +138,7 @@ combine
 
 + `utilities.indexlist`, `indexlistl`
 
-    ```
+    ```ocaml
     let indexlist l =
       let len = List.length l in
       let indices = fromto 0 len in
