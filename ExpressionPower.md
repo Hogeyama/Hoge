@@ -33,7 +33,6 @@ ADT固有のmeasure，再帰的な述語他
 
       </details><!--}}}-->
 
-
 + `Cegen.merge_tree`
   + 木がmergeできる
       + Bottomと任意の木はmergeできる
@@ -42,7 +41,7 @@ ADT固有のmeasure，再帰的な述語他
           + 子の数が等しく
           + 対応する子がmergeできる
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><sumarry>code</summary>
 
     ```ocaml
     let rec merge_tree t1 t2 =
@@ -58,7 +57,7 @@ ADT固有のmeasure，再帰的な述語他
                                                 ^^^^^^^^^^^^
     ```
 
-    </details><!--}}}>
+    </details>
 
 + `Saturate.split_ity`
   + `let (h, ts) = decompose_term t`として`h`につく各型`ty`について `length ts <= tyのarity`
@@ -77,6 +76,7 @@ ADT固有のmeasure，再帰的な述語他
     ```
 
     </details><!--}}}>
+
 
 + `Saturate.get_range`
 

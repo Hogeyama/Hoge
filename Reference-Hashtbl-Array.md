@@ -68,7 +68,7 @@ Array
 
 + `Utilities.list_max`
   + `f c (List.tl l) (List.hd l)`
-  + caller
+  + callerでArrayを使っている
 
     ```
     let order_of_nste nste =
@@ -89,5 +89,34 @@ Hashtbl
 <a name = "cegenevaluate_eterm"></a>
 + `Cegn.evaluate_eterm`
     + `mk_env vte' termss`を呼ぶときに`vte'`と`termss`の長さが同じである必要がある
-+ `Cegen.evaluate_eterm`
+
+      <details><sumarry>code</summary><!--{{{-->
+
+      ```ocaml
+      let rec evaluate_eterm eterm env =
+        let (h,termss) = decompose_eterm eterm in
+        match h with
+        | ENT(f,ity,ntyid) ->
+            begin try
+              let (vte,body) =
+                try Hashtbl.find tracetab (f,ity) with Not_found ->
+                  register_backchain f ity ntyid;
+                  Hashtbl.find tracetab (f,ity)
+              in
+              let (vte',body') = rename_vte_eterm vte body in
+              let env' = mk_env vte' termss in
+              evaluate_eterm body' (env'@env)
+            with Not_found -> assert false end (* ここには来ないのでは？ *)
+        ...
+      let rec mk_env vte termss =
+        match (vte, termss) with
+        | ([], []) -> []
+        | ((v,ty)::vte', ts::termss') ->
+            let x = List.combine ty ts in
+            List.map (fun (ity,t)->((v,ity),t)) x@(mk_env vte' termss')
+        | _ -> assert false
+
+      ```
+
+      </details><!--}}}>
 
