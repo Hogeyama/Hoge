@@ -80,10 +80,17 @@ List.assoc, List.find, List.sorted
 
 後回し
 
-+ `Grammar`.ml|218 col 5| `assert false (* raise (UndefinedNonterminal (name_of_nt x)) *)`
-  List.assoc 無理
-+ `Grammar.`|223 col 11| | [] -> assert false
-  `List.find (List.mem _) _` 無理
++ `Grammar.find_dep`
+  + `List.assoc`
++ `Grammar.find_sc`
+  `List.find (List.mem _) _`
+
+...
+
+TODO List.assoc
+
+
+<!--
 
 saturate.ml|901 col 10| else raise Untypable
   List.exists
@@ -97,7 +104,7 @@ saturate.ml|911 col 11| [] -> raise Untypable
   これは行けるかな？いや再帰の部分で無理だ
   merge_two_vtes vte0 (check_argtypes_aux venv terms tys)でUntypableを投げないものが存在する
 pobdd.ml|329 col 7| assert (sorted (List.map (function POS v | NEG v -> v) vl));
-  無
+  無理
 
 上のUntypableもcatchされたりされなかったりしそう
 以下catchされるかもしれない
@@ -132,4 +139,5 @@ typing.ml|301 col 27| let to_be_checked = List.assoc f dmap in
 utilities.ml|235 col 5| List.assoc var s
 utilities.ml|246 col 18| let env_lookup = List.assoc
 utilities.ml|321 col 9| (* like List.assoc, but with a specialized equality function *)
-理
+
+-->
