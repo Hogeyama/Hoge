@@ -82,7 +82,7 @@ ADT固有のmeasure，再帰的な述語他
 
   + `Saturate.split_ity`と大体同じ
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><sumarry>code</summary>
 
     ```ocaml
     let rec get_range ity arity =
@@ -93,13 +93,13 @@ ADT固有のmeasure，再帰的な述語他
         | _ -> assert false
     ```
 
-    </details><!--}}}>
+    </details>
 
 + `Saturate.get_argtys`
 
   + 同上
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><sumarry>code</summary>
 
     ```ocaml
     let rec get_argtys arity ity =
@@ -110,11 +110,11 @@ ADT固有のmeasure，再帰的な述語他
         | _ -> assert false
     ```
 
-    </details><!--}}}>
+    </details>
 
 + `Scc.find_cycle`
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><sumarry>code</summary>
 
     ```ocaml
     let rec find_cycle((g:graph),visited,x) =
@@ -132,7 +132,7 @@ ADT固有のmeasure，再帰的な述語他
               find_cycle_next(g', x, visited, yl);;
     ```
 
-    </details><!--}}}>
+    </details>
 
 <a name = "Pobdd__make_node"></a>
 + `Pobdd.make_node`
@@ -143,7 +143,7 @@ ADT固有のmeasure，再帰的な述語他
           + → 行けそう.mdに TODO
   + `neg`が問題
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><sumarry>code</summary>
 
     ```ocaml
     let node_id = function
@@ -184,13 +184,13 @@ ADT固有のmeasure，再帰的な述語他
       in go t1;;
     ```
 
-    </details><!--}}}>
+    </details>
 
 + `Cegen.mk_env`
   + リストの長さについて複雑な条件
   + callerもHashtblが絡んでくるので難しい
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><sumarry>code</summary>
 
     ```ocaml
     let rec mk_env vte termss =
@@ -228,7 +228,7 @@ ADT固有のmeasure，再帰的な述語他
           with Not_found -> assert false end
       ...
     ```
-    </details><!--}}}>
+    </details>
 
 <a name = "Conversion__pterm2term"></a>
 + `Conversion.pterm2term`周り
