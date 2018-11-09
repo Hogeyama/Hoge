@@ -71,6 +71,7 @@
 
 + `Saturate.check_args_aux`
   + `List.combine`と同じ条件だがcaller側が複雑
+      + xssのすべての要素xsは，その長さがysの長さと等しい
 
     <details><sumarry>code</summary><!--{{{-->
 
