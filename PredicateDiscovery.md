@@ -29,7 +29,7 @@
           | Node(_,_) -> (i, t)
     ```
 
-    </details><!--}}}>
+    </details><!--}}}-->
 
 + `Saturate.range_types`
   + `ty1 : ity list`の各要素が`ItyFun`にmatchする．
@@ -64,7 +64,7 @@
           range_types ty1 ty2
     ```
 
-    </details><!--}}}>
+    </details><!--}}}-->
 
 + `Saturate.range_types_with_vte`
   + 上の関数のvariation．ほぼ同じ
@@ -118,7 +118,8 @@
           List.exists (fun ity1 -> subtype ity1 ity) (ty_of_nt_q f q)
     ```
 
-    </details><!--}}}>
+    </details><!--}}}-->
+
 
 + `Saturate.check_argtypes_aux`
   + 上のvariation
@@ -194,7 +195,7 @@
           merge_tree t1 t2
     ```
 
-    </details><!--}}}>
+    </details><!--}}}-->
 
 <!--
 + `Pobdd.make_node`
