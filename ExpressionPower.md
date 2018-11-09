@@ -201,7 +201,6 @@ ADT固有のmeasure，再帰的な述語他
                   ^^^^^^^^^^^^
           (List.map (fun (ity,t)->((v,ity),t)) x)@(mk_env vte' termss')
       | _ -> assert false
-             ^^^^^^^^^^^^ この部分については [link](./参照・Hashtbl・Array.md#cegenevaluate_eterm)
     (* 下とほぼ同じ
     let rec mk_env vte termss =
       List.concat @@ List.map2
