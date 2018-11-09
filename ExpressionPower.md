@@ -63,7 +63,7 @@ ADT固有のmeasure，再帰的な述語他
   + `let (h, ts) = decompose_term t`として`h`につく各型`ty`について `length ts <= tyのarity`
   + caller: `ty_of_term2`
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><sumarry>code</summary>
 
     ```ocaml
     let rec split_ity arity ity =
@@ -75,7 +75,7 @@ ADT固有のmeasure，再帰的な述語他
         | _ -> assert false
     ```
 
-    </details><!--}}}>
+    </details>
 
 
 + `Saturate.get_range`
