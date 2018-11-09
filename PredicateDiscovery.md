@@ -104,6 +104,7 @@
           List.for_all (fun ity-> check_term t ity venv) ty
             && check_args_aux tys' terms' venv
       | _ -> assert false
+             ^^^^^^^^^^^^
     and check_term term ity venv =
       match term with
       | App(_,_) ->
