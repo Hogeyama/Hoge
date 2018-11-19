@@ -1,8 +1,9 @@
 
+
 + `Saturate.range_types`
   + `ty1 : ity list`の各要素が`ItyFun`にmatchする．
   + `ty1`は`ty_of_term`由来で，termを`App(t1,t2)`にmatchさせたときのt1のtyp
-  + `App(t1,t2)` => `t1`は関数というinvariantは陽には得られないと思うので厳しいか
+  + `App(t1,t2)` => `t1`は関数というinvariantは陽には得られないと思うので難しい
 
     <details><sumarry>code</summary><!--{{{-->
 
@@ -38,8 +39,7 @@
   + 上の関数のvariation．ほぼ同じ
 
 + `Saturate.check_args_aux`
-  + `List.combine`と同じ条件だがcaller側が複雑
-      + xssのすべての要素xsは，その長さがysの長さと等しい
+  + リストの長さが同じという条件がどこで保証されているのか追うのが大変
 
     <details><sumarry>code</summary><!--{{{-->
 
@@ -86,10 +86,30 @@
           List.exists (fun ity1 -> subtype ity1 ity) (ty_of_t_q a q)
       | NT(f) -> let q = codom_of_ity ity in
           List.exists (fun ity1 -> subtype ity1 ity) (ty_of_nt_q f q)
+    let match_head_ity h venv arity ity =
+      match ity with
+      | ItyQ(q) ->
+          (match h with
+             Var(v) ->
+               if !num_of_states=1 then
+                 let ty = (ty_of_var venv v) in
+                 List.map (fun ity1 -> get_argtys arity ity1) ty
+               else
+                 let ty = List.filter (fun ity1->codom_of_ity ity1=q) (ty_of_var venv v) in
+                 List.map (fun ity1 -> get_argtys arity ity1) ty
+           | _ ->
+               let ty = ty_of_head_q2 h venv q in
+               List.map (fun ity1 -> get_argtys arity ity1) ty
+          )
+      | _ -> (* ItyFun *)
+          let q = codom_of_ity ity in
+          let ty = List.filter
+              (fun ity1 -> subtype (get_range ity1 arity) ity)
+              (ty_of_head_q2 h venv q) in
+          List.map (fun ity -> get_argtys arity ity) ty
     ```
 
     </details><!--}}}-->
-
 
 + `Saturate.check_argtypes_aux`
   + 上のvariation
@@ -180,7 +200,7 @@
 
 + `Utilities.list_max`
   + リストが空でないことを示す必要: `f c (List.tl l) (List.hd l)`
-  + callerが難しい
+  + caller側が配列からリストを作っている
 
     ```ocaml
     let order_of_nste nste =
@@ -189,8 +209,6 @@
       let x = list_max (fun (_nt1,ord1) ->fun (_nt2,ord2) -> compare ord1 ord2) ordmap in
       x
     ```
-
-+ `Cegen.evaluate_eterm`
 
 + `Cegen.find_derivation`
 
