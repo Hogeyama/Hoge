@@ -2,12 +2,13 @@
 List.assoc, List.find, List.sorted
 ==================================
 
-`List.assoc`，`List.find`，`List.sorted`
+`List.assoc`
+-----------
 
 
 + `Ai.add_binding_st`
 
-  + arrayとList.assoc
+  + arrayの対応も必要
 
     <details><summary>code</summary><!--{{{-->
 
@@ -20,24 +21,7 @@ List.assoc, List.find, List.sorted
 
     </details><!--}}}-->
 
-+ `Saturate.pick_vte`
-
-  + `List.find`
-
-    <details><summary>code</summary><!--{{{-->
-
-    ```ocaml
-    let pick_vte ity ity_vte_list =
-      try
-        snd(List.find (fun (ity',_vte)-> subtype ity' ity) ity_vte_list )
-      with Not_found -> raise Untypable
-    ```
-
-    </details><!--}}}-->
-
 + `Saturate.check_ty_of_term`
-
-  + List.find, List.assoc
 
     <details><summary>code</summary><!--{{{-->
 
@@ -73,28 +57,88 @@ List.assoc, List.find, List.sorted
     </details><!--}}}-->
 
 + `Scc.split_list_at`
-  + `List.mem`が必要
+  + `List.mem`に相当
+
++ `Grammar.find_dep`
+
++ `Grammar.find_sc`
+  `List.find (List.mem _) _`
+
+他9個
+
+
+`List.find`
+-----------
+
++ `Saturate.pick_vte`
+
+    <details><summary>code</summary><!--{{{-->
+
+    ```ocaml
+    let pick_vte ity ity_vte_list =
+      try
+        snd(List.find (fun (ity',_vte)-> subtype ity' ity) ity_vte_list )
+      with Not_found -> raise Untypable
+    ```
+
+    </details><!--}}}-->
+
++ `Saturate.check_ty_of_term`
+
+    <details><summary>code</summary><!--{{{-->
+
+    ```ocaml
+    let rec check_ty_of_term venv term ity =
+      match term with
+      | App(_,_) ->
+          let (h,terms) = Grammar.decompose_term term in
+          let tyss = match_head_types h venv (List.length terms) ity in
+          let vte = check_argtypes venv terms tyss in vte
+      | Var(v) ->
+          begin try
+            let ity1 = List.find (fun ity1 -> subtype ity1 ity) (ty_of_var venv v) in
+                       ^^^^^^^^^
+            [(v, [ity1])]
+          with
+            Not_found -> raise Untypable
+          end
+      | T(a) ->
+          let q = codom_of_ity ity in
+          if List.exists (fun ity1 -> subtype ity1 ity) (ty_of_t_q a q)
+             ^^^^^^^^^^^
+          then []
+          else raise Untypable
+      | NT(f) ->
+          let q = codom_of_ity ity in
+          if List.exists (fun ity1 -> subtype ity1 ity) (ty_of_nt_q f q)
+             ^^^^^^^^^^^
+          then []
+          else raise Untypable
+    ```
+
+    </details><!--}}}-->
 
 + `Saturate.ty_of_var`
   + 実質`List.exist`
 
-後回し
-
-+ `Grammar.find_dep`
-  + `List.assoc`
 + `Grammar.find_sc`
   `List.find (List.mem _) _`
 
 
-他
-+ `List.exists`
-+ `List.sorted` 1
-+ `List.assoc` 9
+`List.sorted`
+-------------
+
++ `Pobdd.restrict_sorted`
+
+    ```
+    let restrict_sorted t vl =
+      let memo = ref Op1Map.empty in
+      assert (sorted (List.map (function POS v | NEG v -> v) vl));
+      ...
+    ```
 
 <!--
 
-pobdd.ml|329 col 7| assert (sorted (List.map (function POS v | NEG v -> v) vl));
-  無理
 ai.ml|124 col 19| let arity = List.assoc a m.AlternatingAutomaton.alpha in
   されない
 ai.ml|378 col 18| let qref = try List.assoc rho' (!binding_array_nt).(f) with Not_found -> assert false in
