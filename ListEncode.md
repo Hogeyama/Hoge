@@ -85,13 +85,38 @@ List.assoc, List.find, List.sorted
 + `Grammar.find_sc`
   `List.find (List.mem _) _`
 
-...
 
-TODO List.assoc
-
+他
++ `List.exists`
++ `List.sorted` 1
++ `List.assoc` 9
 
 <!--
 
+pobdd.ml|329 col 7| assert (sorted (List.map (function POS v | NEG v -> v) vl));
+  無理
+ai.ml|124 col 19| let arity = List.assoc a m.AlternatingAutomaton.alpha in
+  されない
+ai.ml|378 col 18| let qref = try List.assoc rho' (!binding_array_nt).(f) with Not_found -> assert false in
+  されない
+cegen.ml|90 col 20| | Var(x) -> (try List.assoc x vte with Not_found -> assert false)
+  されない
+cegen.ml|285 col 21| let eterm1 = List.assoc (v,aty) env in
+  されない
+grammar.ml|216 col 5| List.assoc x dmap
+  されない
+saturate.ml|95 col 3| List.assoc a m.alpha
+  されない
+saturate.ml|131 col 21| let fml = List.assoc (q,a) m.AlternatingAutomaton.delta in
+  されない
+grammar.ml|132 col 20| let arity_of_t a = List.assoc a (!gram).t
+  されない
+scc.ml|8 col 28| let get_node (g:graph) x = List.assoc x g;;
+  されない
+
+以下catchされる関数
+
+Saturate.check_ty_of_term
 saturate.ml|901 col 10| else raise Untypable
   List.exists
 saturate.ml|901 col 10| else raise Untypable
@@ -103,41 +128,40 @@ saturate.ml|906 col 10| else raise Untypable
 saturate.ml|911 col 11| [] -> raise Untypable
   これは行けるかな？いや再帰の部分で無理だ
   merge_two_vtes vte0 (check_argtypes_aux venv terms tys)でUntypableを投げないものが存在する
-pobdd.ml|329 col 7| assert (sorted (List.map (function POS v | NEG v -> v) vl));
-  無理
+  Untypableはcatchされる (`update_ty_of_nt_inc_for_nt_sub_venv`)
 
-上のUntypableもcatchされたりされなかったりしそう
-以下catchされるかもしれない
 
-ai.ml|124 col 19| let arity = List.assoc a m.AlternatingAutomaton.alpha in
-ai.ml|378 col 18| let qref = try List.assoc rho' (!binding_array_nt).(f) with Not_found -> assert false in
 alternatingAutomaton.ml|18 col 15| let cls = List.assoc v delta in
+  される
 alternatingAutomaton.ml|30 col 15| let fml = List.assoc v delta in
+  される
 automaton.ml|14 col 3| List.assoc (q,a) m.delta
-cegen.ml|90 col 20| | Var(x) -> (try List.assoc x vte with Not_found -> assert false)
+  使われない
 cegen.ml|237 col 30| | EVar(v,ity) -> (try EVar(List.assoc v vmap, ity) with Not_found -> eterm)
-cegen.ml|285 col 21| let eterm1 = List.assoc (v,aty) env in
+  される
 conversion.ml|49 col 36| Syntax.Name(s) -> (try Var(List.assoc s vmap) with Not_found -> T(s))
-grammar.ml|132 col 20| let arity_of_t a = List.assoc a (!gram).t
+  される
 grammar.ml|162 col 9| List.assoc x s
+  される
 grammar.ml|171 col 9| List.assoc x s
-grammar.ml|216 col 5| List.assoc x dmap
-saturate.ml|95 col 3| List.assoc a m.alpha
-saturate.ml|131 col 21| let fml = List.assoc (q,a) m.AlternatingAutomaton.delta in
-scc.ml|8 col 28| let get_node (g:graph) x = List.assoc x g;;
+  される
 scc.ml|52 col 31| let (_,_,nextr) = List.assoc x g in
+  される
 scc.ml|57 col 20| try (let _ = List.assoc y g' in g') with
+  される
 scc.ml|154 col 29| let (nextr,_) = List.assoc x g in
+  される
 scc.ml|159 col 20| try (let _ = List.assoc y g' in g') with
+  される
 scc.ml|163 col 25| let (nextr, cacher) = List.assoc n g in
+  使われない関数
 stype.ml|55 col 21| STvar v -> (try List.assoc v sub with Not_found -> st)
+  される
 stype.ml|149 col 29| let lookup_stype_t a cste = List.assoc a cste
-typing.ml|207 col 37| (try List.filter (eqrty n rty) (List.assoc a cte)
-typing.ml|210 col 38| ( try List.filter (eqrty n rty) (List.assoc v vte)
-typing.ml|288 col 27| let to_be_checked = List.assoc f dmap in
-typing.ml|301 col 27| let to_be_checked = List.assoc f dmap in
+  されない @tcheck_term
 utilities.ml|235 col 5| List.assoc var s
-utilities.ml|246 col 18| let env_lookup = List.assoc
+  される
 utilities.ml|321 col 9| (* like List.assoc, but with a specialized equality function *)
+  される
 
 -->

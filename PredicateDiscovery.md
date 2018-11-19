@@ -1,36 +1,4 @@
 
-+ `Cegen.string_of_path`
-
-    <details><sumarry>code</summary><!--{{{-->
-
-    ```ocaml
-    (*{SPEC}
-    type string_of_path : { t : tree | t <> Bottom } -> string
-    {SPEC}*)
-    let rec string_of_path t =
-      match t with
-      | Node(a,tl) ->
-          let (i,t') = find_nonbot tl 1 in
-          if i=0 then ("("^a^",0)")
-          else ("("^a^","^(string_of_int i)^")"^(string_of_path t'))
-      | _ -> assert false
-    (*{SPEC}
-    type find_nonbot
-      :  tree list
-      -> { i : int | i > 0 }
-      -> { (j,t) : int * tree | t = Bottom => j = 0 }
-    {SPEC}*)
-    let rec find_nonbot tl i =
-      match tl with
-      | [] -> (0, Bottom)
-      | t::tl' ->
-          match t with
-          | Bottom -> find_nonbot tl' (i+1)
-          | Node(_,_) -> (i, t)
-    ```
-
-    </details><!--}}}-->
-
 + `Saturate.range_types`
   + `ty1 : ity list`の各要素が`ItyFun`にmatchする．
   + `ty1`は`ty_of_term`由来で，termを`App(t1,t2)`にmatchさせたときのt1のtyp
@@ -139,7 +107,6 @@
   + 同上
 
 + `Cegen.evaluate_eterm`
-  + わちゃわちゃしている
 
     <details><sumarry>code</summary><!--{{{-->
 
@@ -157,7 +124,7 @@
             let (vte',body') = rename_vte_eterm vte body in
             let env' = mk_env vte' termss in
             evaluate_eterm body' (env'@env)
-          with Not_found -> assert false end (* ここには来ないのでは？ *)
+          with Not_found -> assert false end
       | ET(a,_aty) ->
           begin try
             let trees = List.map (fun ts -> evaluate_eterms ts env) termss in

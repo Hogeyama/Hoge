@@ -300,6 +300,40 @@ let rec find_derivation ntyid vte term aty =
 
 + `NT(_) -> assert false`の方は`find_headtype`内のmatchを見ればunreachableだと分かる
 + `App(_,_) -> assert false`の方は`find_derivation`の方で`decompose_term`を呼んでいる所を見ればunreachableだと分かる
++ 問題点
+    + `find_headtype`ないで`h`が関数`h'`にエンコードされる
+    + matchでは`h' []`ほげ
+
+
+`Cegen.string_of_path`
+----------------------
+
+```ocaml
+(*{SPEC}
+type string_of_path : { t : tree | match t with Bottom -> false | _ -> true } -> string
+{SPEC}*)
+let rec string_of_path t =
+  match t with
+  | Node(a,tl) ->
+      let (i,t') = find_nonbot tl 1 in
+      if i=0 then ("("^a^",0)")
+      else ("("^a^","^(string_of_int i)^")"^(string_of_path t'))
+  | _ -> assert false
+(*{SPEC}
+type find_nonbot
+  :  tree list
+  -> { i : int | i > 0 }
+  -> { (j,t) : int * tree | match t with Bottom -> j = 0 | _ -> true }
+{SPEC}*)
+let rec find_nonbot tl i =
+  match tl with
+  | [] -> (0, Bottom)
+  | t::tl' ->
+      match t with
+      | Bottom -> find_nonbot tl' (i+1)
+      | Node(_,_) -> (i, t)
+```
+
 
 
 <a name = "Cegen__lookup_headty"></a>
