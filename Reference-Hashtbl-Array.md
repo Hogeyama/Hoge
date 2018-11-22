@@ -106,7 +106,7 @@ Hashtbl
               let (vte',body') = rename_vte_eterm vte body in
               let env' = mk_env vte' termss in
               evaluate_eterm body' (env'@env)
-            with Not_found -> assert false end (* ここには来ないのでは？ *)
+            with Not_found -> assert false end
         ...
       let rec mk_env vte termss =
         match (vte, termss) with
