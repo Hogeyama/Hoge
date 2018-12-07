@@ -1,24 +1,79 @@
 
 Reference, Array, Hashtbl
-=========================
 
 Reference
----------
+=========
 
-+ `Ai.expand_varheadnode`
+Ai.expand_varheadnode
+---------------------
 
-  ````ocaml
-  let expand_varheadnode term (node: node ref) =
-    let (aterm,qs) = !node in
-    let (h,termss) = aterm in
-    match h with
-    | Hvar(_x) ->
-        let (h',terms)=term in
-        enqueue_node ((h', terms@termss),qs)
-    | _ -> assert false
-  ````
+````ocaml
+let expand_varheadnode term (node: node ref) =
+  let (aterm,qs) = !node in
+  let (h,termss) = aterm in
+  match h with
+  | Hvar(_x) ->
+      let (h',terms)=term in
+      enqueue_node ((h', terms@termss),qs)
+  | _ -> assert false
+````
 
-+ `Setqueue.dequeue`
+<a name = "Ai__merge_statevecs"></a>
+Ai.merge_statevecs
+------------------
+
+Listの non-emptiness
+
+```ocaml
+let rec merge_statevecs qsvecs =
+  match qsvecs with
+  | [] -> assert false
+          ^^^^^^^^^^^^
+  | [qsvec] -> qsvec
+  | qsvec1::qsvecs' ->
+      merge_statevec qsvec1 (merge_statevecs qsvecs')
+
+(* caller *)
+let expand_states qs a =
+  merge_statevecs (List.map (fun q -> expand_state q a) qs)
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ qsがnon-empty
+
+(* caller of expand_states *)
+let expand_terminal a termss qs =
+  let aterms = termss in
+  let qss = expand_states qs a in
+            ^^^^^^^^^^^^^^^^^^
+  let aterms' = Utilities.indexlist aterms in
+  List.iter (fun (i,aterm) -> if qss.(i)=[] then () else enqueue_node (aterm, qss.(i))) aterms'
+
+(* caller of expand_terminal *)
+let process_node (aterm,qs) =
+  let (h, termss) = decompose_aterm aterm in
+  match lookup_nodetab aterm with
+  | Some(node) -> ...
+  | None -> (* aterm has not been processed *)
+      let node = register_newnode (aterm,qs) in
+      match h with
+      | Ht(a) -> expand_terminal a termss qs
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      ...
+
+(* caller of process_node *)
+let rec expand() =
+  match dequeue_node() with
+        ^^^^^^^^^^^^^^
+  | None -> print_string ("size of ACG: "^(string_of_int (ATermHashtbl.length nodetab))^"\n")
+  | Some(aterm,qs) -> process_node(aterm,qs); expand()
+                      ^^^^^^^^^^^^^^^^^^^^^^
+```
+
+Referenceから取り出したリストがnon-empty
+
+[同じ関数の別呼び出しで簡単に検証可能な方](./Possible.md#Ai__merge_statevecs)
+
+
+Setqueue.dequeue
+----------------
 
   ````ocaml
   let rec dequeue (qref,bitmap) =
@@ -31,11 +86,13 @@ Reference
         else dequeue(qref,bitmap)
   ````
 
-+ `Cegen.find_ce`
-  + `let (_,ntyid) = List.hd ((!nteallref).(0).(0)) in`
+Cegen.find_ce
+--------------
 
-+ `Cegen.find_ce`
-  + `let (_,ntyid) = List.hd ((!nteallref).(0).(0)) in`
+`let (_,ntyid) = List.hd ((!nteallref).(0).(0)) in`
+
+他
+--
 
 + `type tyseq = TySeq of (Grammar.ty * (tyseq ref)) list | TySeqNil`に関するエラー
   + `Saturate.tyseq_mem`
@@ -45,20 +102,10 @@ Reference
   + `Saturate.tyseq_merge_tys`
 
 Array
------
+=====
 
 + `Ai.add_binding_st`
   + `try List.assoc rho' (!binding_array_nt).(f) with Not_found -> assert false in`
-
-    ```ocaml
-    let rec ty_of_var venv (f,i) =
-      match venv with
-      | [] -> assert false
-      | (j1,j2,tys)::venv' ->
-          if j1<=i && i<=j2 then
-            proj_tys f (i-j1) tys
-          else ty_of_var venv' (f,i)
-    ```
 
 + `Cegen.find_ce`
   + `let (_,ntyid) = List.hd ((!nteallref).(0).(0)) in`
@@ -79,7 +126,7 @@ Array
     ```
 
 Hashtbl
--------
+=======
 
 + `Ai.id2state`
 + `Ai.state2id`
@@ -90,7 +137,7 @@ Hashtbl
 + `Cegn.evaluate_eterm`
     + `mk_env vte' termss`を呼ぶときに`vte'`と`termss`の長さが同じである必要がある
 
-      <details><sumarry>code</summary><!--{{{-->
+      <details><!--{{{-->
 
       ```ocaml
       let rec evaluate_eterm eterm env =

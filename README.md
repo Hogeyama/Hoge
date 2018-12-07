@@ -1,16 +1,18 @@
 
 # HorSat2の分析
 
-+ [検証できそうなケース](./Possible.md)
-    + 15関数
++ [検証できるケース](./Possible.md)
+    + 9ケース
++ [簡単な改良で検証できそうなケース](./TrivialProblem.md)
+    + 6ケース
 + [参照・Hashtbl・配列に関するケース](./Reference-Hashtbl-Array.md)
-    + 18関数
-+ [述語の表現力が足りないケース](./ExpressionPower.md)
-    + 9関数
+    + 18ケース
 + [エンコード方法を工夫する必要があるケース](./ListEncode.md)
-    + 19関数
+    + 28ケース
++ [述語の表現力が足りないケース](./ExpressionPower.md)
+    + 9ケース
 + [その他のケース](./Others.md)
-    + 14関数
+    + 14ケース
 
-カウントは関数毎にした（該当するassertionを一つでも含んでいたらカウントする）．
+計84ケース
 

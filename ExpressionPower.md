@@ -5,7 +5,7 @@ ADT固有のmeasure，再帰的な述語他
 + `Cegen.mk_vte`
     + arityを述語で表現する必要性
 
-      <details><sumarry>code</summary><!--{{{-->
+      <details><!--{{{-->
 
       ```ocaml
       type ity = ItyQ of ity_id | ItyFun of ity_id * ty * ity
@@ -41,7 +41,7 @@ ADT固有のmeasure，再帰的な述語他
           + 子の数が等しく
           + 対応する子がmergeできる
 
-    <details><sumarry>code</summary>
+    <details>
 
     ```ocaml
     let rec merge_tree t1 t2 =
@@ -63,7 +63,7 @@ ADT固有のmeasure，再帰的な述語他
   + `let (h, ts) = decompose_term t`として`h`につく各型`ty`について `length ts <= tyのarity`
   + caller: `ty_of_term2`
 
-    <details><sumarry>code</summary>
+    <details>
 
     ```ocaml
     let rec split_ity arity ity =
@@ -82,7 +82,7 @@ ADT固有のmeasure，再帰的な述語他
 
   + `Saturate.split_ity`と大体同じ
 
-    <details><sumarry>code</summary>
+    <details>
 
     ```ocaml
     let rec get_range ity arity =
@@ -99,7 +99,7 @@ ADT固有のmeasure，再帰的な述語他
 
   + 同上
 
-    <details><sumarry>code</summary>
+    <details>
 
     ```ocaml
     let rec get_argtys arity ity =
@@ -114,7 +114,7 @@ ADT固有のmeasure，再帰的な述語他
 
 + `Scc.find_cycle`
 
-    <details><sumarry>code</summary>
+    <details>
 
     ```ocaml
     let rec find_cycle((g:graph),visited,x) =
@@ -143,7 +143,7 @@ ADT固有のmeasure，再帰的な述語他
           + → 行けそう.mdに TODO
   + `neg`が問題
 
-    <details><sumarry>code</summary>
+    <details>
 
     ```ocaml
     let node_id = function
@@ -190,7 +190,7 @@ ADT固有のmeasure，再帰的な述語他
   + リストの長さについて複雑な条件
   + callerもHashtblが絡んでくるので難しい
 
-    <details><sumarry>code</summary>
+    <details>
 
     ```ocaml
     let rec mk_env vte termss =

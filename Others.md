@@ -5,7 +5,7 @@
   + `ty1`は`ty_of_term`由来で，termを`App(t1,t2)`にmatchさせたときのt1のtyp
   + `App(t1,t2)` => `t1`は関数というinvariantは陽には得られないと思うので難しい
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><><!--{{{-->
 
     ```ocaml
     let range_types ty1 ty2 =
@@ -41,7 +41,7 @@
 + `Saturate.check_args_aux`
   + リストの長さが同じという条件がどこで保証されているのか追うのが大変
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><!--{{{-->
 
     ```ocaml
     let rec check_args tys_ity_list terms venv ty =
@@ -128,7 +128,7 @@
 
 + `Cegen.evaluate_eterm`
 
-    <details><sumarry>code</summary><!--{{{-->
+    <details><!--{{{-->
 
     ```ocaml
     let rec evaluate_eterm eterm env =
@@ -211,4 +211,17 @@
     ```
 
 + `Cegen.find_derivation`
+
+
++ Saturate.ty_of_var
+
+    ```ocaml
+    let rec ty_of_var venv (f,i) =
+      match venv with
+      | [] -> assert false
+      | (j1,j2,tys)::venv' ->
+          if j1<=i && i<=j2 then
+            proj_tys f (i-j1) tys
+          else ty_of_var venv' (f,i)
+    ```
 

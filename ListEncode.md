@@ -66,6 +66,7 @@ List.assoc, List.find, List.sorted
 
 他9個
 
+14
 
 `List.find`
 -----------
