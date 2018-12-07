@@ -191,3 +191,63 @@ let rec find_nonbot tl i =
 + 今のmochiは`type tree = Bottom | Node of int * tree list`が扱えない（`tree list`の部分）
     + 実装上の問題
 
+<a name = "Pobdd__make_node"></a>
+Pobdd.make_node
+---------------
+
+  + `assert (node_id t1 <> node_id t2)`
+  + caller
+      + `bdd_var`, `bdd_nvar`, `neg`, `bdd_and`, `bdd_or`, `exists_vl`, `forall_vl`, `imp_and_exists`, `restrict_sorted`
+      + `neg`以外は呼び出し前にチェックが入る (`if node_id t1 = node_id t2 then ... else make_node t1 t2`)
+      + `neg`については[ここ](./ExpressionPower.md#Pobdd__make_node)
+
+  + 検証途中
+      + 試して見た所`bdd_var`が検証できない．非決定性が原因？
+
+    <details>
+
+    ```ocaml
+    type bdd = Node of var * bdd * bdd * id * var list | Leaf of bool;;
+    let node_id = function
+      | Leaf(true) -> 0
+      | Leaf(false) -> 1
+      | Node(_,_,_,x,_) -> x
+
+    let make_node (v,t1,t2) =
+      let i1 = node_id t1 in
+      let i2 = node_id t2 in
+      assert (i1 <> i2);
+      ...
+
+    let bdd_true  = Leaf true
+    let bdd_false = Leaf false
+    let bdd_var v = make_node (v, bdd_true, bdd_false)
+
+    let bdd_and t1 t2 =
+      let memo = ref Op2Map.empty in
+      let rec go t1 t2 = match (t1,t2) with
+        | (Leaf b,t2) -> if b then t2 else bdd_false
+        | (t1,Leaf b) -> if b then t1 else bdd_false
+        | (Node (v1,x1,y1,i1,_), Node (v2,x2,y2,i2,_)) ->
+          if Op2Map.mem (i1,i2) !memo then Op2Map.find (i1,i2) !memo
+          else begin
+            let (z,x1,x2,y1,y2) = match (Elt.compare v1 v2) with
+              | 0 -> (v1,x1,x2,y1,y2)
+              | x when x < 0 -> (v1,x1,t2,y1,t2)
+              | _ -> (v2,t1,x2,t1,y2)
+            in
+            let t1' = go x1 x2 in
+            let t2' = go y1 y2 in
+            let t =
+              if node_id t1' = node_id t2' then t1'
+              else make_node (z,t1',t2') in
+            memo := Op2Map.add (i1,i2) t !memo;
+            t
+          end
+      in go t1 t2
+    ```
+
+    (8ケース)
+
+    </details>
+

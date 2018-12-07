@@ -1,6 +1,10 @@
 
+Invariantがどこで保証されているか特定できていない（あるいはできそうにない）
+==========================================================================
 
-+ `Saturate.range_types`
+Saturate.range_types
+--------------------
+
   + `ty1 : ity list`の各要素が`ItyFun`にmatchする．
   + `ty1`は`ty_of_term`由来で，termを`App(t1,t2)`にmatchさせたときのt1のtyp
   + `App(t1,t2)` => `t1`は関数というinvariantは陽には得られないと思うので難しい
@@ -35,16 +39,28 @@
 
     </details><!--}}}-->
 
-+ `Saturate.range_types_with_vte`
-  + 上の関数のvariation．ほぼ同じ
+  + `Saturate.range_types_with_vte`
+      + 上の関数とほぼ同じ
 
-+ `Saturate.check_args_aux`
+Saturate.check_args_aux
+-----------------------
+
   + リストの長さが同じという条件がどこで保証されているのか追うのが大変
+      + リストの長さが同じリスト？
+          <!-- + TODO ADT.mdに移動したほうがよいか -->
 
     <details><!--{{{-->
 
     ```ocaml
-    let rec check_args tys_ity_list terms venv ty =
+    let rec check_args_aux tys terms venv =
+      match (tys,terms) with
+      | ([], []) -> true
+      | (ty::tys', t::terms') ->
+          List.for_all (fun ity-> check_term t ity venv) ty
+            && check_args_aux tys' terms' venv
+      | _ -> assert false
+             ^^^^^^^^^^^^ tysとtermsの長さが同じ
+    and check_args tys_ity_list terms venv ty =
       match tys_ity_list with
       | [] -> ty
       | (tys,ity)::tys_ity_list' ->
@@ -66,14 +82,6 @@
             )
           else
             check_args tys_ity_list' terms venv ty
-    and check_args_aux tys terms venv =
-      match (tys,terms) with
-      | ([], []) -> true
-      | (ty::tys', t::terms') ->
-          List.for_all (fun ity-> check_term t ity venv) ty
-            && check_args_aux tys' terms' venv
-      | _ -> assert false
-             ^^^^^^^^^^^^
     and check_term term ity venv =
       match term with
       | App(_,_) ->
@@ -86,6 +94,8 @@
           List.exists (fun ity1 -> subtype ity1 ity) (ty_of_t_q a q)
       | NT(f) -> let q = codom_of_ity ity in
           List.exists (fun ity1 -> subtype ity1 ity) (ty_of_nt_q f q)
+
+    (* caller *)
     let match_head_ity h venv arity ity =
       match ity with
       | ItyQ(q) ->
@@ -126,7 +136,10 @@
 + `Saturate.tcheck_terms_wo_venv_inc`
   + 同上
 
-+ `Cegen.evaluate_eterm`
+Cegen.evaluate_eterm
+--------------------
+
+TODO
 
     <details><!--{{{-->
 
@@ -186,42 +199,17 @@
 
     </details><!--}}}-->
 
-<!--
-+ `Pobdd.make_node`
-  + 詳細 → [link](./ExpressionPower.md#Pobdd__make_node)
--->
+検証が恐らくできないもの
+========================
 
-+ `AlternatingAutomaton.from_transition`
+AlternatingAutomaton.from_transition
+------------------------------------
+
   + `let init = fst (fst (List.hd transitions)) in`
   + `transitions`はparserの返り値
 
-+ `AlternatingAutomaton.convert`
+AlternatingAutomaton.convert
+----------------------------
+
   + 同上
-
-+ `Utilities.list_max`
-  + リストが空でないことを示す必要: `f c (List.tl l) (List.hd l)`
-  + caller側が配列からリストを作っている
-
-    ```ocaml
-    let order_of_nste nste =
-      let nste' = indexlist (Array.to_list nste) in
-      let ordmap = List.map (fun (nt, sty) -> (nt, order_of_sty sty)) nste' in
-      let x = list_max (fun (_nt1,ord1) ->fun (_nt2,ord2) -> compare ord1 ord2) ordmap in
-      x
-    ```
-
-+ `Cegen.find_derivation`
-
-
-+ Saturate.ty_of_var
-
-    ```ocaml
-    let rec ty_of_var venv (f,i) =
-      match venv with
-      | [] -> assert false
-      | (j1,j2,tys)::venv' ->
-          if j1<=i && i<=j2 then
-            proj_tys f (i-j1) tys
-          else ty_of_var venv' (f,i)
-    ```
 
