@@ -2,6 +2,8 @@
 ADT固有のsize function
 ======================
 
+TODO caller側を調べる
+
 Cegen.mk_vte
 ------------
 
@@ -94,15 +96,11 @@ Saturate.get_argtys
 
     </details>
 
-
-size function以外の述語
-=======================
-
 <a name = "Pobdd__make_node"></a>
 Pobdd.make_node
 ---------------
 
-再帰的でない
+再帰的ではないが同じ扱いができそうなためこの分類
 
 + `assert (node_id t1 <> node_id t2)`
 + caller
@@ -144,6 +142,10 @@ Pobdd.make_node
 
     </details><!--}}}-->
 
+
+その他複雑なもの
+================
+
 Cegen.merge_tree
 ----------------
 
@@ -172,10 +174,9 @@ Cegen.merge_tree
 
     </details>
 
-その他複雑なもの
-================
+Cegen.mk_env
+------------
 
-+ `Cegen.mk_env`
   + リストの長さについて複雑な条件
   + callerもHashtblが絡んでくるので難しい
 
@@ -219,7 +220,8 @@ Cegen.merge_tree
     </details><!--}}}-->
 
 <a name = "Conversion__pterm2term"></a>
-+ `Conversion.pterm2term`周り
+Conversion.pterm2term
+---------------------
 
   ````ocaml
   let rec pterm2term vmap pterm =

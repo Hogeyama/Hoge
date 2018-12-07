@@ -102,6 +102,7 @@ let rec find_derivation ntyid vte term aty =
 + 問題点
     + term`h`が関数`h'`にエンコードされる
     + matchの度に`h' []`が評価されるので`NT`にmatchしないはずのものがmatchすることになる
+        + 非決定性を含む関数で近似する場合
 + 解決策
     + `h' []`の情報だけは別に持つ
         + ややad-hocだが実用上は十分か（二重にmatchさせる場合は同じ問題が起こる）
