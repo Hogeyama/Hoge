@@ -1,5 +1,5 @@
 
-Int Non Negative
+Int Non-Negative
 ================
 
 <a name = "Stype__arity2sty"></a>
