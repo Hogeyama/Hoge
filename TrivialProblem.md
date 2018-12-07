@@ -74,7 +74,7 @@ let mk_trtab m =
   ) tr
 ```
 
-[indexlist](./OK.md#Utilities__inexlist)と同様
+[indexlist](#Utilities__inexlist)と同様
 
 <a name = "Conversion__normalize_term"></a>
 Conversion.normalize_term
@@ -97,7 +97,7 @@ let rec normalize_term term =
   | _ -> term
 ```
 
-[indexlist](./OK.md#Utilities__inexlist)と同様
+[indexlist](#Utilities__inexlist)と同様
 
 List Nonempty
 =============
