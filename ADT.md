@@ -128,7 +128,7 @@ let rec get_range ity arity =
 
 ### caller
 
-```
+```ocaml
 let match_head_ity h venv arity ity =
   match ity with
   | ItyQ(q) ->
@@ -562,7 +562,7 @@ Listのソート
 Pobdd.restrict_sorted
 ---------------------
 
-```
+```ocaml
 let restrict_sorted t vl =
   let memo = ref Op1Map.empty in
   assert (sorted (List.map (function POS v | NEG v -> v) vl));

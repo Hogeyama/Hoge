@@ -75,12 +75,12 @@ Reference
 
 各Reference `ref`に述語`P`を割り当てて，書き込みと読み出しを次のように変換する．
 
-```
+```ocaml
 ref := v          ==> assume (P v)
 let x = !ref in e ==> let x = * in assume (P v); [[e]]
 ```
 
-`P`をCEGAR mannarで強めたり弱めたりする
+`P`をCEGAR mannerで強めたり弱めたりする
 
 
 ### どのくらい有効か
