@@ -3,8 +3,8 @@ List.assoc
 ==========
 
 
-`Ai.add_binding_st`
--------------------
+Ai.add_binding_st
+-----------------
 
 + arrayの対応も必要
 
@@ -19,8 +19,8 @@ let add_binding_st f rho qs =
 
 </details><!--}}}-->
 
-`Saturate.check_ty_of_term`
----------------------------
+Saturate.check_ty_of_term
+-------------------------
 
 <details><!--{{{-->
 
@@ -55,40 +55,40 @@ let rec check_ty_of_term venv term ity =
 
 </details><!--}}}-->
 
-`Scc.split_list_at`
--------------------
+Scc.split_list_at
+-----------------
 
 `List.mem`に相当
 
-`Grammar.find_dep`
-------------------
+Grammar.find_dep
+----------------
 
 
-`Grammar.find_sc`
------------------
+Grammar.find_sc
+---------------
 
 `List.find (List.mem _) _`
 
-`Ai.mk_trtab_for_ata`
----------------------
+Ai.mk_trtab_for_ata
+--------------------
 
 `let arity = List.assoc a m.AlternatingAutomaton.alpha in`
 
-`Ai.add_binding_st`
--------------------
+Ai.add_binding_st
+-----------------
 
 `let qref = try List.assoc rho' (!binding_array_nt).(f) with Not_found -> assert false in`
 
-`Cegen.lookup_headty`
----------------------
+Cegen.lookup_headty
+-------------------
 
 ```
 match h with
 | Var(x) -> (try List.assoc x vte with Not_found -> assert false)
 ```
 
-`Cegen.evaluate_eterm`
-----------------------
+Cegen.evaluate_eterm
+--------------------
 
 ```
 | EVar(v,aty) ->
@@ -98,8 +98,8 @@ match h with
      with Not_found -> assert false end
 ```
 
-`Grammar.find_dep`
-------------------
+Grammar.find_dep
+----------------
 
 ```
 let find_dep x dmap =
@@ -109,23 +109,23 @@ let find_dep x dmap =
     assert false (* raise (UndefinedNonterminal (name_of_nt x)) *)
 ```
 
-`Grammar.arity_of_t`
---------------------
+Grammar.arity_of_t
+------------------
 
 ```ocaml
 let arity_of_t a = List.assoc a (!gram).t
 ```
 
-`Saturate.arity_of`
--------------------
+Saturate.arity_of
+-----------------
 
 ```
 let arity_of a m =
   List.assoc a m.alpha
 ```
 
-`Saturate.ata2cte`
-------------------
+Saturate.ata2cte
+----------------
 
 + `List.iter`の中
 
@@ -147,8 +147,8 @@ let ata2cte m =
 
 </details><!--}}}-->
 
-`Scc.get_node`
---------------
+Scc.get_node
+------------
 
 ```ocaml
 let get_node (g:graph) x = List.assoc x g;;
@@ -159,8 +159,8 @@ let get_node (g:graph) x = List.assoc x g;;
 `List.find`
 ===========
 
-`Saturate.pick_vte`
--------------------
+Saturate.pick_vte
+-----------------
 
 <details><!--{{{-->
 
@@ -173,8 +173,8 @@ let pick_vte ity ity_vte_list =
 
 </details><!--}}}-->
 
-`Saturate.check_ty_of_term`
----------------------------
+Saturate.check_ty_of_term
+-------------------------
 
 <details><!--{{{-->
 
@@ -209,19 +209,19 @@ let rec check_ty_of_term venv term ity =
 
 </details><!--}}}-->
 
-`Saturate.ty_of_var`
---------------------
+Saturate.ty_of_var
+------------------
 
 `List.exist`と同じ
 
-`Grammar.find_sc`
------------------
+Grammar.find_sc
+---------------
 
 `List.find (List.mem _) _`
 
 
-`Saturate.ty_of_var`
---------------------
+Saturate.ty_of_var
+------------------
 
 + 別の引数`i`に依存する
 
@@ -235,8 +235,8 @@ let rec ty_of_var venv (f,i) =
       else ty_of_var venv' (f,i)
 ````
 
-`Cegen.find_derivation`
-------------------------
+Cegen.find_derivation
+---------------------
 
 <details><!--{{{-->
 ```ocaml
@@ -271,9 +271,6 @@ let register_backchain f ity ntyid =
   Hashtbl.add tracetab (f,ity) (vte,eterm)
 ```
 </details><!--}}}-->
-
-
----
 
 <!--
 
