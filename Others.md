@@ -39,17 +39,16 @@ Saturate.range_types
 
     </details><!--}}}-->
 
-Saturate.range_types_with_vte
------------------------------
 
-+ 上の関数とほぼ同じ
+  + 似ている関数
+      + `Saturate.range_types_with_vte`
 
 Saturate.check_args_aux
 -----------------------
 
-+ リストの長さが同じという条件がどこで保証されているのか追うのが大変
-    + リストの長さが同じリスト？
-        <!-- + TODO ADT.mdに移動したほうがよいか -->
+  + リストの長さが同じという条件がどこで保証されているのか追うのが大変
+      + リストの長さが同じリスト？
+          <!-- + TODO ADT.mdに移動したほうがよいか -->
 
     <details><!--{{{-->
 
@@ -123,20 +122,16 @@ Saturate.check_args_aux
 
     </details><!--}}}-->
 
-+ `Saturate.check_argtypes_aux`
-  + 上のvariation
+  + 似ている関数
+        + `Saturate.check_argtypes_aux`
 
-+ `Saturate.check_argtypes_inc_aux`
-  + 上のvariation
+        + `Saturate.check_argtypes_inc_aux`
 
-+ `Saturate.tcheck_terms_w_venv`
-  + 同じような構造
+        + `Saturate.tcheck_terms_w_venv`
 
-+ `Saturate.tcheck_terms_wo_venv`
-  + 同上
+        + `Saturate.tcheck_terms_wo_venv`
 
-+ `Saturate.tcheck_terms_wo_venv_inc`
-  + 同上
+        + `Saturate.tcheck_terms_wo_venv_inc`
 
 Cegen.evaluate_eterm
 --------------------
