@@ -123,15 +123,15 @@ Saturate.check_args_aux
     </details><!--}}}-->
 
   + 似ている関数
-        + `Saturate.check_argtypes_aux`
+      + `Saturate.check_argtypes_aux`
 
-        + `Saturate.check_argtypes_inc_aux`
+      + `Saturate.check_argtypes_inc_aux`
 
-        + `Saturate.tcheck_terms_w_venv`
+      + `Saturate.tcheck_terms_w_venv`
 
-        + `Saturate.tcheck_terms_wo_venv`
+      + `Saturate.tcheck_terms_wo_venv`
 
-        + `Saturate.tcheck_terms_wo_venv_inc`
+      + `Saturate.tcheck_terms_wo_venv_inc`
 
 Cegen.evaluate_eterm
 --------------------
