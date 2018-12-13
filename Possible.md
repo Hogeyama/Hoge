@@ -287,3 +287,11 @@ let rec find_derivation ntyid vte term aty =
   with Found eterm -> eterm
 ```
 
+その他
+======
+
+Pobdd.make_node
+---------------
+
+caller `bdd_var`, `bdd_nvar`に対しては検証できる．[詳細](./TrivialProblem.md#Pobdd__make_node)
+

@@ -40,45 +40,45 @@ let register_backchain f ity ntyid =
   let (arity,body) = lookup_rule f in
   let vars = mk_vars f arity in
   let (vte,rty) = mk_vte vars ity in
-  let eterm = try find_derivation ntyid vte body rty
-    with Not_found ->
-      (print_string ("failed to find a derivation for "^(name_of_nt f)^":");
-       Type.print_ity ity; assert false)
-  in
-  Hashtbl.add tracetab (f,ity) (vte,eterm)
+  ...
 ```
 
-`let (arity,body) = lookup_rule f`のとき`body`のarityが`arity`以上であることを言うのが難しそう（グローバル変数への書き込み）
+`let (arity,body) = lookup_rule f` のとき`body`のarityが`arity`以上であることを言う必要があるが，難しそう（グローバル変数への書き込み）
 関連する関数:
 
 ```ocaml
 (* grammer.ml *)
-let get_def (f: nameNT) (g:gram) =
-  g.r.(f)
 let lookup_rule (f: nameNT) =
   get_def f (!gram)
+let get_def (f: nameNT) (g:gram) =
+  g.r.(f)
 
-(* conversion.ml *)
+(* conversion.ml: gramへの書き込み *)
 let Conversion.prerules2gram prerules =
-  let prerules = elim_fun_from_prerules prerules in
-  let ntnames = List.map (fun (x,_,_)->x) prerules in
-  let num_of_nts = List.length ntnames in
-  let _ = (ntauxid := num_of_nts) in
-  let _ = nttab := Array.make num_of_nts (dummy_ntname,O) in
-  let _ = List.iter register_nt ntnames in
+  ...
   let rules = Array.make num_of_nts (0,dummy_term) in
   let vinfo = Array.make  num_of_nts [| |] in
-  let _ = prerules2rules rules vinfo prerules in
+  let _ = prerules2rules rules vinfo prerules in (* ここでruleが書き込まれる *)
   let (nt', rules') =
+            ^^^^^
     if !(Flags.normalize) then
       add_auxiliary_rules !nttab rules
     else (!nttab, rules)
   in
-  let s = 0 in
-  let terminals = List.map (fun a -> (a, -1)) (terminals_in_rules rules) in
+  ...
   let g = {nt= nt'; t=terminals; vinfo = vinfo; r=rules'; s=s} in
+                                                  ^^^^^^
   Grammar.gram := g; g
   ^^^^^^^^^^^^^^^^^
+
+let prerule2rule rules vinfo (f, (_, ss, pterm)) =
+  let ss' = indexlist ss in
+  let arity = List.length ss in
+  let vmap = List.map (fun (i,v) -> (v, (f,i))) ss' in
+  let _ = vinfo.(f) <- Array.make arity dummy_vname in
+  let _ = List.iter (fun (i,v) -> (vinfo.(f).(i) <- v)) ss' in
+  let term = pterm2term vmap pterm in
+  rules.(f) <- (arity, term)
 ```
 
 </details><!--}}}-->
@@ -187,6 +187,7 @@ let rec get_argtys arity ity =
 <details><!--{{{-->
 
 ```ocaml
+(* 渡されるarityは let (h,terms) = Grammar.decompose_term t in length terms *)
 let match_head_ity h venv arity ity =
   match ity with
   | ItyQ(q) ->
@@ -213,6 +214,7 @@ let match_head_ity h venv arity ity =
       List.map (fun ity -> get_argtys arity ity) ty
                            ^^^^^^^^^^
 ```
+`ty_of_var`でarrayが使われる
 
 ```ocaml
 let match_head_types h venv arity ity =
@@ -239,6 +241,7 @@ let match_head_types h venv arity ity =
       List.map (fun (ity,vte) -> (get_argtys arity ity, vte)) ty
                                   ^^^^^^^^^^
 ```
+同上
 
 ```ocaml
 let rec check_ty_of_term_inc venv term ity f tyf =
@@ -256,6 +259,7 @@ let rec check_ty_of_term_inc venv term ity f tyf =
   in
   let vte = check_argtypes_inc venv terms tyss f tyf in vte
 ```
+TODO
 
 ```ocaml
 let rec tcheck_wo_venv_inc term ity g ty_g =
@@ -289,7 +293,11 @@ let rec tcheck_wo_venv_inc term ity g ty_g =
         (fun vtes tys ->
            (tcheck_terms_wo_venv_inc terms tys g ty_g)@vtes) [] tyss
 ```
+`ty_g`の出処をたどると`dequeue_nt_ty()`でグローバル変数に突き当たる
++ `dequeue_nt_ty`自身も複雑
+
 </details><!--}}}-->
+
 
 <a name = "Pobdd__make_node"></a>
 Pobdd.make_node

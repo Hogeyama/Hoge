@@ -52,6 +52,9 @@ let indexlistr l =
   List.combine l indices
 ```
 
++ 述語発見がうまくいっていない
+  TODO: うまく行かない原因調べる
+
 <a name = "Ai__mk_trtab"></a>
 Ai.mk_trtab
 --------------
@@ -150,7 +153,7 @@ let process_node (aterm,qs) =
       let node = register_newnode (aterm,qs) in
       match h with
       | Ht(a) -> expand_terminal a termss qs
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ (* [1] こっちは厳しい*)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ (* こっちは厳しい*)
       ...
 ```
 
@@ -199,10 +202,11 @@ Pobdd.make_node
   + caller
       + `bdd_var`, `bdd_nvar`, `neg`, `bdd_and`, `bdd_or`, `exists_vl`, `forall_vl`, `imp_and_exists`, `restrict_sorted`
       + `neg`以外は呼び出し前にチェックが入る (`if node_id t1 = node_id t2 then ... else make_node t1 t2`)
-      + `neg`については[ここ](./ExpressionPower.md#Pobdd__make_node)
+          + `neg`については[ここ](./ExpressionPower.md#Pobdd__make_node)
 
-  + 検証途中
-      + 試して見た所`bdd_var`が検証できない．非決定性が原因？
+  + 検証
+      + `bdd_var`, `bdd_nvar`は検証できた
+      + `bdd_and`, `bdd_or`, `exists_vl`, `forall_vl`, `imp_and_exists`, `restrict_sorted`は自分のPCではabstractでメモリを使い果たしたため分からず
 
     <details>
 

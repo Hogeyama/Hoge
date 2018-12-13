@@ -39,7 +39,6 @@ TODO 仮に述語発見ができたとしてどれくらい検証できるか調
 リストのメンバーシップ
 ======================
 
-
 アイデア
 --------
 
@@ -74,8 +73,23 @@ Reference
 ### 非決定的な値とみなす
 
 
-TODO どれくらいうまくいくか調べる
+各Reference `ref`に述語`P`を割り当てて，書き込みと読み出しを次のように変換する．
 
+```
+ref := v          ==> assume (P v)
+let x = !ref in e ==> let x = * in assume (P v); [[e]]
+```
+
+`P`をCEGAR mannarで強めたり弱めたりする
+
+
+### どのくらい有効か
+
+述語`P`がうまく行きさえすれば
+[`Ai.merge_statevecs`](./Reference-Hashtbl-Array.md#Ai__merge_statevecs)はこれで検証できるようになるはず
+
+
+### Stoe-Passing Style
 
 
 

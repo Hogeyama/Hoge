@@ -18,6 +18,9 @@ let expand_varheadnode term (node: node ref) =
   | _ -> assert false
 ````
 
+`node`はグローバル変数(`tab_variableheadnode : node ref list array array ref`)由来
+
+
 <a name = "Ai__merge_statevecs"></a>
 Ai.merge_statevecs
 ------------------
@@ -42,7 +45,7 @@ let expand_states qs a =
 let expand_terminal a termss qs =
   let aterms = termss in
   let qss = expand_states qs a in
-            ^^^^^^^^^^^^^^^^^^
+            ^^^^^^^^^^^^^^^^^^ qsがnon-empty
   let aterms' = Utilities.indexlist aterms in
   List.iter (fun (i,aterm) -> if qss.(i)=[] then () else enqueue_node (aterm, qss.(i))) aterms'
 
@@ -66,12 +69,25 @@ let rec expand() =
   | Some(aterm,qs) -> process_node(aterm,qs); expand()
                       ^^^^^^^^^^^^^^^^^^^^^^
 ```
-
-Referenceから取り出したリストがnon-empty
-
 [同じ関数の別呼び出しで簡単に検証可能な方](./Possible.md#Ai__merge_statevecs)
 
+Referenceから取り出したリストがnon-empty
+`Ai.nodequeue : (aterm * int list) list ref`の`int list`が常にnon-emptyであることを保証すればよい．
+`Ai.nodequeue`に書き込みをする関数は次の二つ:
 
+```
+let enqueue_node node = nodequeue := node::!nodequeue
+let dequeue_node () = match !nodequeue with
+  | [] -> None
+  | x::q -> (nodequeue := q; Some(x))
+```
+
+`enqueue_node`のcallerは`process_node`, `init_expansion`, `expand_terminal`, `expand_varheadnode`の4つで，
+どれも局所的な推論によって書き込むリストがnon-emptyであることを示せる
+（`expand_terminal`だけは`if qss.(i)=[] then () else enqueue_node (aterm, qss.(i))) aterms'`という風に配列が関わるので工夫が要る）．
+
+
+<!--
 Setqueue.dequeue
 ----------------
 
@@ -85,11 +101,16 @@ Setqueue.dequeue
         then (bitmap.(n) <- false; n)
         else dequeue(qref,bitmap)
   ````
+全部catchされる
+-->
 
 Cegen.find_ce
 --------------
 
-`let (_,ntyid) = List.hd ((!nteallref).(0).(0)) in`
++ `let (_,ntyid) = List.hd ((!nteallref).(0).(0)) in`
++ 初期化(`Cegen.init_nte()`)時には`(!nteallref).(0).(0)`は空なのでtemporalな推論が必要
+    + 非決定的な値とみなす方法ではできない
+
 
 他
 --
@@ -111,7 +132,8 @@ Array
   + `let (_,ntyid) = List.hd ((!nteallref).(0).(0)) in`
 
 + `Saturate.register_terms_te`
-  + `let tys = List.hd (tyseq2tyss !tyseqref 0) in`
+  + `let tyseqref = (!terms_te).(id) in ... let tys = List.hd (tyseq2tyss !tyseqref 0) in`
+  + `tyseq2tyss`が複雑なので難しい
 
 + `Utilities.list_max`
   + `f c (List.tl l) (List.hd l)`
@@ -123,7 +145,20 @@ Array
       let ordmap = List.map (fun (nt, sty) -> (nt, order_of_sty sty)) nste' in
       let x = list_max (fun (_nt1,ord1) ->fun (_nt2,ord2) -> compare ord1 ord2) ordmap in
       x
+
+    (* order_of_nste の caller *)
+    let tcheck g alpha =
+      ...
+      let num_of_nts = Array.length g.nt in
+      let nste = Array.make num_of_nts dummy_type in
+      ...
+      let (f,ord) = order_of_nste nste in
+      ...
     ```
+
+    `Array.length g.nt > 0`の証明は難しい:
+    + `g`は`Conversion.convert(_ata)`由来（`Main.verifyParseResult`参照）
+    + conversion.mlを見るとどうやら`g.nt`のサイズはパース結果のprerulesの長さに等しい？
 
 Hashtbl
 =======
