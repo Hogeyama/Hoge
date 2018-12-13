@@ -37,6 +37,7 @@ let rec mk_vte vars at =
 
 </details><!--}}}-->
 
+<a name = "Saturate__split_ity"></a>
 Saturate.split_ity
 ------------------
 
@@ -81,7 +82,7 @@ let rec get_range ity arity =
 Saturate.get_argtys
 -------------------
 
-同上
+これもarity
 
 <details>
 
@@ -145,6 +146,85 @@ let neg t1 =
 
 その他複雑なもの
 ================
+
+Saturate.check_args
+-------------------
+
+  + リストの長さが同じリスト
+
+    <details><!--{{{-->
+
+    ```ocaml
+    (* tysとtermsの長さが等しい *)
+    let rec check_args_aux tys terms venv =
+      match (tys,terms) with
+      | ([], []) -> true
+      | (ty::tys', t::terms') ->
+          List.for_all (fun ity-> check_term t ity venv) ty
+            && check_args_aux tys' terms' venv
+      | _ -> assert false
+             ^^^^^^^^^^^^ tysとtermsの長さが同じ
+    (* tys_ity_list の各要素 (tys,ity)に対してtysとtermsの長さが等しい *)
+    and check_args tys_ity_list terms venv ty =
+      match tys_ity_list with
+      | [] -> ty
+      | (tys,ity)::tys_ity_list' ->
+          if check_args_aux tys terms venv
+             ^^^^^^^^^^^^^^
+          then
+            (if !Flags.merge_vte then
+               let ty' = List.filter (fun ity1->not(eq_ity ity ity1)) ty in
+               let tys_ity_list'' =
+                 List.filter (fun (_,ity1)->not(eq_ity ity ity1)) tys_ity_list'
+               in
+               check_args tys_ity_list'' terms venv (ity::ty')
+             else
+               let ty' = List.filter (fun ity1->not(subtype ity ity1)) ty in
+               let tys_ity_list'' =
+                 List.filter (fun (_,ity1)->not(subtype ity ity1)) tys_ity_list'
+               in
+               check_args tys_ity_list'' terms venv (ity::ty')
+            )
+          else
+            check_args tys_ity_list' terms venv ty
+    and check_term term ity venv =
+      match term with
+      | App(_,_) ->
+          let (h,terms) = Grammar.decompose_term term in
+          let tyss = match_head_ity h venv (List.length terms) ity in
+          List.exists (fun tys->check_args_aux tys terms venv) tyss
+                                ^^^^^^^^^^^^^^
+      | Var(v) -> List.exists (fun ity1 -> subtype ity1 ity) (ty_of_var venv v)
+      | T(a) -> let q = codom_of_ity ity in
+          List.exists (fun ity1 -> subtype ity1 ity) (ty_of_t_q a q)
+      | NT(f) -> let q = codom_of_ity ity in
+          List.exists (fun ity1 -> subtype ity1 ity) (ty_of_nt_q f q)
+
+    (* caller *)
+    let ty_of_term2 venv term =
+      let (h,terms) = Grammar.decompose_term term in
+      let ty = ty_of_head h venv in
+      let arity = List.length terms in
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+      let tys_ity_list = List.map (split_ity arity) ty in
+      check_args tys_ity_list terms venv []
+    ```
+
+    [`split_ity`](./#Saturate__split_ity)は引数と同じ長さのリストを返す
+
+    </details><!--}}}-->
+
+  + 似ている関数（callerは追えていない）
+      + `Saturate.check_argtypes_aux`
+
+      + `Saturate.check_argtypes_inc_aux`
+
+      + `Saturate.tcheck_terms_w_venv`
+
+      + `Saturate.tcheck_terms_wo_venv`
+
+      + `Saturate.tcheck_terms_wo_venv_inc`
+
 
 Cegen.merge_tree
 ----------------
