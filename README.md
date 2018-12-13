@@ -9,12 +9,14 @@
     + 18ケース以上
 + [リストのメンバーシップ等](./ListMembership.md)
     + 20ケース以上
-        + `List.assoc`: 14ケース
-        + `List.find`: 6ケース
+        + `List.assoc`: 14ケース以上
+        + `List.find`: 6ケース以上
 + [ADT](./ADT.md)
-    + 16ケース以上
+    + 17ケース以上
         + size function等: 5ケース
         + list is_sorted: 1ケース
+        + リストの長さが等しいリスト: 7ケース
+        + その他: 3ケース
 + [その他](./Others.md)
     + 特に手が付けられなさそうな問題
     + 4ケース

@@ -109,6 +109,7 @@ let ty_of_term2 venv term =
 
 + `let (h, ts) = decompose_term t`として`h`につく各型`ty`について `length ts <= tyのarity`
 + `ty_of_head`がグローバル変数を使っているので厳しいか
+    + TODO 難しい説明
 
 
 Saturate.get_range
@@ -428,34 +429,6 @@ Saturate.check_args
       + `Saturate.tcheck_terms_wo_venv_inc`
 
 
-Cegen.merge_tree
-----------------
-
-+ 木がmergeできる
-    + Bottomと任意の木はmergeできる
-    + Nodeどうしは次の条件を満たすときmergeできる
-        + ラベルが等しく
-        + 子の数が等しく
-        + 対応する子がmergeできる
-
-<details>
-
-```ocaml
-let rec merge_tree t1 t2 =
-  match t1, t2 with
-  | Bottom, _ -> t2
-  | _, Bottom -> t1
-  | Node(a1,ts1), Node(a2,ts2) ->
-      if a1=a2 then
-        Node(a1, merge_trees ts1 ts2)
-      else assert false
-and merge_trees ts1 ts2 =
-  List.map (fun (t1,t2) -> merge_tree t1 t2) (List.combine ts1 ts2)
-i                                              ^^^^^^^^^^^^
-```
-
-</details>
-
 Cegen.mk_env
 ------------
 
@@ -500,6 +473,35 @@ let rec evaluate_eterm eterm env =
   ...
 ```
 </details><!--}}}-->
+
+
+Cegen.merge_tree
+----------------
+
++ 木がmergeできる
+    + Bottomと任意の木はmergeできる
+    + Nodeどうしは次の条件を満たすときmergeできる
+        + ラベルが等しく
+        + 子の数が等しく
+        + 対応する子がmergeできる
+
+<details>
+
+```ocaml
+let rec merge_tree t1 t2 =
+  match t1, t2 with
+  | Bottom, _ -> t2
+  | _, Bottom -> t1
+  | Node(a1,ts1), Node(a2,ts2) ->
+      if a1=a2 then
+        Node(a1, merge_trees ts1 ts2)
+      else assert false
+and merge_trees ts1 ts2 =
+  List.map (fun (t1,t2) -> merge_tree t1 t2) (List.combine ts1 ts2)
+i                                              ^^^^^^^^^^^^
+```
+
+</details>
 
 <a name = "Conversion__pterm2term"></a>
 Conversion.pterm2term
