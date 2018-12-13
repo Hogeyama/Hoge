@@ -14,7 +14,7 @@
         + size function等: 5ケース
 + [その他](./Others.md)
     + 特に手が付けられなさそうな問題
-    + 11ケース
+    + 4ケース
         + Invariantがどこで保証されているか特定できそうにない: 2ケース
             <!-- + TODO elim_fun_from_*を追加 -->
         + Parserの検証が必要: 2ケース

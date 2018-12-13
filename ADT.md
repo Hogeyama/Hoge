@@ -2,8 +2,6 @@
 ADT固有のsize function
 ======================
 
-TODO caller側を調べる
-
 Cegen.mk_vte
 ------------
 
@@ -18,7 +16,7 @@ let rec arity = function
   | ItyFun(_,_,ity) -> 1 + arity ity
 
 (*{SPEC}
-type mk_vte : (vars : int list) -> { at : ity | arity at >= List.length vars } -> _
+type mk_vte : (vars : int list) -> { at : ity | arity at >= List.length vars } -> ...
 {SPEC}*)
 let rec mk_vte vars at =
   match at with
@@ -35,6 +33,54 @@ let rec mk_vte vars at =
       end
 ```
 
+### caller
+
+```ocaml
+let register_backchain f ity ntyid =
+  let (arity,body) = lookup_rule f in
+  let vars = mk_vars f arity in
+  let (vte,rty) = mk_vte vars ity in
+  let eterm = try find_derivation ntyid vte body rty
+    with Not_found ->
+      (print_string ("failed to find a derivation for "^(name_of_nt f)^":");
+       Type.print_ity ity; assert false)
+  in
+  Hashtbl.add tracetab (f,ity) (vte,eterm)
+```
+
+`let (arity,body) = lookup_rule f`のとき`body`のarityが`arity`以上であることを言うのが難しそう（グローバル変数への書き込み）
+関連する関数:
+
+```ocaml
+(* grammer.ml *)
+let get_def (f: nameNT) (g:gram) =
+  g.r.(f)
+let lookup_rule (f: nameNT) =
+  get_def f (!gram)
+
+(* conversion.ml *)
+let Conversion.prerules2gram prerules =
+  let prerules = elim_fun_from_prerules prerules in
+  let ntnames = List.map (fun (x,_,_)->x) prerules in
+  let num_of_nts = List.length ntnames in
+  let _ = (ntauxid := num_of_nts) in
+  let _ = nttab := Array.make num_of_nts (dummy_ntname,O) in
+  let _ = List.iter register_nt ntnames in
+  let rules = Array.make num_of_nts (0,dummy_term) in
+  let vinfo = Array.make  num_of_nts [| |] in
+  let _ = prerules2rules rules vinfo prerules in
+  let (nt', rules') =
+    if !(Flags.normalize) then
+      add_auxiliary_rules !nttab rules
+    else (!nttab, rules)
+  in
+  let s = 0 in
+  let terminals = List.map (fun a -> (a, -1)) (terminals_in_rules rules) in
+  let g = {nt= nt'; t=terminals; vinfo = vinfo; r=rules'; s=s} in
+  Grammar.gram := g; g
+  ^^^^^^^^^^^^^^^^^
+```
+
 </details><!--}}}-->
 
 <a name = "Saturate__split_ity"></a>
@@ -43,22 +89,26 @@ Saturate.split_ity
 
 arity
 
+```ocaml
+let rec split_ity arity ity =
+  if arity=0 then ([],ity)
+  else match ity with
+    | ItyFun(_,ty,ity1)->
+        let (tys,ity') = split_ity (arity-1) ity1 in
+        (ty::tys, ity')
+    | _ -> assert false
+
+(* caller *)
+let ty_of_term2 venv term =
+  let (h,terms) = Grammar.decompose_term term in
+  let ty = ty_of_head h venv in
+  let arity = List.length terms in
+  let tys_ity_list = List.map (split_ity arity) ty in
+  check_args tys_ity_list terms venv []
+```
+
 + `let (h, ts) = decompose_term t`として`h`につく各型`ty`について `length ts <= tyのarity`
-+ caller: `ty_of_term2`
-
-    <details>
-
-    ```ocaml
-    let rec split_ity arity ity =
-      if arity=0 then ([],ity)
-      else match ity with
-        | ItyFun(_,ty,ity1)->
-            let (tys,ity') = split_ity (arity-1) ity1 in
-            (ty::tys, ity')
-        | _ -> assert false
-    ```
-
-    </details>
++ `ty_of_head`がグローバル変数を使っているので厳しいか
 
 
 Saturate.get_range
@@ -66,9 +116,8 @@ Saturate.get_range
 
 `Saturate.split_ity`と大体同じ
 
-<details>
-
 ```ocaml
+(* `ity`のarityが`arity`以上 *)
 let rec get_range ity arity =
   if arity=0 then ity
   else
@@ -77,16 +126,54 @@ let rec get_range ity arity =
     | _ -> assert false
 ```
 
-</details>
+### caller
+
+```
+let match_head_ity h venv arity ity =
+  match ity with
+  | ItyQ(q) ->
+      (match h with
+         Var(v) ->
+           if !num_of_states=1 then
+             let ty = (ty_of_var venv v) in
+             List.map (fun ity1 -> get_argtys arity ity1) ty
+           else
+             let ty = List.filter (fun ity1->codom_of_ity ity1=q) (ty_of_var venv v) in
+             List.map (fun ity1 -> get_argtys arity ity1) ty
+       | _ ->
+           let ty = ty_of_head_q2 h venv q in
+           List.map (fun ity1 -> get_argtys arity ity1) ty
+      )
+  | _ ->
+      let q = codom_of_ity ity in
+      let ty = List.filter
+          (fun ity1 -> subtype (get_range ity1 arity) ity)
+                                ^^^^^^^^^
+          (ty_of_head_q2 h venv q) in
+      List.map (fun ity -> get_argtys arity ity) ty
+
+let ty_of_head_q2 h venv q =
+  match h with
+  | NT(f) -> ty_of_nt_q f q
+             ^^^^^^^^^^
+  | T(a) -> ty_of_t_q a q
+  | Var(v) -> ty_of_var venv v
+  | _ -> assert false
+```
+
+`ty_of_nt_q`などがグローバル変数を使っているのでこれも厳しい
+
++ その他のcaller
+    + `match_head_types`: ほぼ同じ
+
 
 Saturate.get_argtys
 -------------------
 
-これもarity
-
-<details>
+arity
 
 ```ocaml
+(* `ity`のarityが`arity`以上 *)
 let rec get_argtys arity ity =
   if arity=0 then []
   else
@@ -95,7 +182,114 @@ let rec get_argtys arity ity =
     | _ -> assert false
 ```
 
-</details>
+### caller
+
+<details><!--{{{-->
+
+```ocaml
+let match_head_ity h venv arity ity =
+  match ity with
+  | ItyQ(q) ->
+      (match h with
+         Var(v) ->
+           if !num_of_states=1 then
+             let ty = ty_of_var venv v in
+             List.map (fun ity1 -> get_argtys arity ity1) ty
+                                   ^^^^^^^^^^
+           else
+             let ty = List.filter (fun ity1->codom_of_ity ity1=q) (ty_of_var venv v) in
+             List.map (fun ity1 -> get_argtys arity ity1) ty
+                                   ^^^^^^^^^^
+       | _ ->
+           let ty = ty_of_head_q2 h venv q in
+           List.map (fun ity1 -> get_argtys arity ity1) ty
+                                 ^^^^^^^^^^
+      )
+  | _ -> (* ItyFun *)
+      let q = codom_of_ity ity in
+      let ty = List.filter
+          (fun ity1 -> subtype (get_range ity1 arity) ity)
+          (ty_of_head_q2 h venv q) in
+      List.map (fun ity -> get_argtys arity ity) ty
+                           ^^^^^^^^^^
+```
+
+```ocaml
+let match_head_types h venv arity ity =
+  match ity with
+  | ItyQ(q) ->
+      begin match h with
+      | Var(v) ->
+          let ty = ty_of_var venv v in
+          let ty' =
+            if !num_of_states=1
+            then ty
+            else List.filter (fun ity1->codom_of_ity ity1=q) ty
+          in
+          List.map (fun ity1 -> (get_argtys arity ity1, [(v,[ity1])])) ty'
+                                 ^^^^^^^^^^
+      | _ ->
+          let ty = ty_of_head_q2 h venv q in
+          List.map (fun ity1 -> (get_argtys arity ity1, [])) ty
+                                 ^^^^^^^^^^
+      end
+  | _ ->
+      let ty = List.filter (fun (ity1,_) ->
+          subtype (get_range ity1 arity) ity) (ty_of_head_q h venv (codom_of_ity ity)) in
+      List.map (fun (ity,vte) -> (get_argtys arity ity, vte)) ty
+                                  ^^^^^^^^^^
+```
+
+```ocaml
+let rec check_ty_of_term_inc venv term ity f tyf =
+  let (h,terms) = Grammar.decompose_term term in
+  let arity = List.length terms in
+  let tyss =
+    if h=NT(f) then
+      let ty1 = List.filter (fun ity1 -> subtype (get_range ity1 arity) ity) tyf in
+      if ty1=[]
+      then raise Untypable
+      else List.map (fun ity -> (get_argtys arity ity, [])) ty1
+                                 ^^^^^^^^^^
+    else
+      match_head_types h venv arity ity
+  in
+  let vte = check_argtypes_inc venv terms tyss f tyf in vte
+```
+
+```ocaml
+let rec tcheck_wo_venv_inc term ity g ty_g =
+  match term with
+    Var(x) -> [[(x,[ity])]]
+  | T(a) ->
+      let q = codom_of_ity ity in
+      let ty = (ty_of_t_q a q) in
+      if List.exists (fun ity1->subtype ity1 ity) ty then
+        [[]]
+      else []
+  | NT(f)->
+      let ty = if f=g then ty_g else
+          let q = codom_of_ity ity in ty_of_nt_q f q
+      in
+      if List.exists (fun ity1->subtype ity1 ity) ty then
+        [[]]
+      else []
+  | App(_,_) ->
+      let (h,terms)=Grammar.decompose_term term in
+      let arity = List.length terms in
+      let tyss =
+        if h=NT(g) then
+          let ty = List.filter (fun ity1 ->
+              subtype (get_range ity1 arity) ity) ty_g in
+          List.map (fun ity -> get_argtys arity ity) ty
+                               ^^^^^^^^^^
+        else match_head_ity h [] arity ity
+      in
+      List.fold_left
+        (fun vtes tys ->
+           (tcheck_terms_wo_venv_inc terms tys g ty_g)@vtes) [] tyss
+```
+</details><!--}}}-->
 
 <a name = "Pobdd__make_node"></a>
 Pobdd.make_node
