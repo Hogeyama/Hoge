@@ -215,6 +215,7 @@ let match_head_types h venv arity ity =
   | _ ->
       let ty = List.filter (fun (ity1,_) ->
           subtype (get_range ity1 arity) ity) (ty_of_head_q h venv (codom_of_ity ity)) in
+                                               ^^^^^^^^^^^^
       List.map (fun (ity,vte) -> (get_argtys arity ity, vte)) ty
 (* match_head_typesの唯一のcaller *)
 let rec check_ty_of_term venv term ity =
@@ -268,8 +269,10 @@ and find_headtype ntyid vte h aty k =
 (* find_headtypeの唯一のcaller *)
 let rec find_derivation ntyid vte term aty =
   let (h,terms) = Grammar.decompose_term term in
+       ^
   let k = List.length terms in
   let head_typings = find_headtype ntyid vte h aty k in
+                     ^^^^^^^^^^^^^
   try
     List.iter (fun (eh,aty0) ->
         try
@@ -283,7 +286,4 @@ let rec find_derivation ntyid vte term aty =
       ) head_typings; raise Not_found
   with Found eterm -> eterm
 ```
-
-+ `mk_ehead`と同じようにできるはず
-
 
