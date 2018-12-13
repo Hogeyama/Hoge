@@ -4,7 +4,7 @@
 + [検証できる](./Possible.md)
     + 10ケース
 + [少し改良すれば検証できそう](./TrivialProblem.md)
-    + 14ケース
+    + 13ケース
 + [参照・Hashtbl・配列](./Reference-Hashtbl-Array.md)
     + 18ケース以上
 + [リストのメンバーシップ等](./ListMembership.md)
@@ -12,6 +12,7 @@
 + [ADT](./ADT.md)
     + 16ケース以上
         + size function等: 5ケース
+        + list is_sorted: 1ケース
 + [その他](./Others.md)
     + 特に手が付けられなさそうな問題
     + 4ケース

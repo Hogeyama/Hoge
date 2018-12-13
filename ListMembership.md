@@ -22,7 +22,7 @@ let add_binding_st f rho qs =
 `Saturate.check_ty_of_term`
 ---------------------------
 
-<details><summary>code</summary><!--{{{-->
+<details><!--{{{-->
 
 ```ocaml
 let rec check_ty_of_term venv term ity =
@@ -69,7 +69,91 @@ let rec check_ty_of_term venv term ity =
 
 `List.find (List.mem _) _`
 
-他9個 (TODO)
+`Ai.mk_trtab_for_ata`
+---------------------
+
+`let arity = List.assoc a m.AlternatingAutomaton.alpha in`
+
+`Ai.add_binding_st`
+-------------------
+
+`let qref = try List.assoc rho' (!binding_array_nt).(f) with Not_found -> assert false in`
+
+`Cegen.lookup_headty`
+---------------------
+
+```
+match h with
+| Var(x) -> (try List.assoc x vte with Not_found -> assert false)
+```
+
+`Cegen.evaluate_eterm`
+----------------------
+
+```
+| EVar(v,aty) ->
+    begin try
+      let eterm1 = List.assoc (v,aty) env in
+      evaluate_eterm (compose_eterm eterm1 termss) env
+     with Not_found -> assert false end
+```
+
+`Grammar.find_dep`
+------------------
+
+```
+let find_dep x dmap =
+  try
+    List.assoc x dmap
+  with Not_found ->
+    assert false (* raise (UndefinedNonterminal (name_of_nt x)) *)
+```
+
+`Grammar.arity_of_t`
+--------------------
+
+```ocaml
+let arity_of_t a = List.assoc a (!gram).t
+```
+
+`Saturate.arity_of`
+-------------------
+
+```
+let arity_of a m =
+  List.assoc a m.alpha
+```
+
+`Saturate.ata2cte`
+------------------
+
++ `List.iter`の中
+
+<details><!--{{{-->
+
+```ocaml
+let ata2cte m =
+  (*  let open AlternatingAutomaton in *)
+  init_cte m.AlternatingAutomaton.alpha m.AlternatingAutomaton.st;
+  List.iter
+    (fun (a,i) ->
+      let l = List.concat (List.map (fun q ->
+          let fml = List.assoc (q,a) m.AlternatingAutomaton.delta in
+          let pis = AlternatingAutomaton.prime_implicants fml in
+          List.map (build_ity q i) pis) m.AlternatingAutomaton.st) in
+      register_cte_ty (a,l))
+    m.AlternatingAutomaton.alpha
+```
+
+</details><!--}}}-->
+
+`Scc.get_node`
+--------------
+
+```ocaml
+let get_node (g:graph) x = List.assoc x g;;
+```
+
 
 
 `List.find`
@@ -78,7 +162,7 @@ let rec check_ty_of_term venv term ity =
 `Saturate.pick_vte`
 -------------------
 
-<details><summary>code</summary><!--{{{-->
+<details><!--{{{-->
 
 ```ocaml
 let pick_vte ity ity_vte_list =
@@ -90,9 +174,9 @@ let pick_vte ity ity_vte_list =
 </details><!--}}}-->
 
 `Saturate.check_ty_of_term`
-===========================
+---------------------------
 
-<details><summary>code</summary><!--{{{-->
+<details><!--{{{-->
 
 ```ocaml
 let rec check_ty_of_term venv term ity =
@@ -190,91 +274,6 @@ let register_backchain f ity ntyid =
 
 
 ---
-
-`Ai.mk_trtab_for_ata`
----------------------
-
-`let arity = List.assoc a m.AlternatingAutomaton.alpha in`
-
-`Ai.add_binding_st`
--------------------
-
-`let qref = try List.assoc rho' (!binding_array_nt).(f) with Not_found -> assert false in`
-
-`Cegen.lookup_headty`
----------------------
-
-```
-match h with
-| Var(x) -> (try List.assoc x vte with Not_found -> assert false)
-```
-
-`Cegen.evaluate_eterm`
-----------------------
-
-```
-| EVar(v,aty) ->
-    begin try
-      let eterm1 = List.assoc (v,aty) env in
-      evaluate_eterm (compose_eterm eterm1 termss) env
-     with Not_found -> assert false end
-```
-
-`Grammar.find_dep`
-------------------
-
-```
-let find_dep x dmap =
-  try
-    List.assoc x dmap
-  with Not_found ->
-    assert false (* raise (UndefinedNonterminal (name_of_nt x)) *)
-```
-
-`Grammar.arity_of_t`
---------------------
-
-```ocaml
-let arity_of_t a = List.assoc a (!gram).t
-```
-
-`Saturate.arity_of`
--------------------
-
-```
-let arity_of a m =
-  List.assoc a m.alpha
-```
-
-`Saturate.ata2cte`
-------------------
-
-+ `List.iter`の中
-
-<details><!--{{{-->
-
-```ocaml
-let ata2cte m =
-  (*  let open AlternatingAutomaton in *)
-  init_cte m.AlternatingAutomaton.alpha m.AlternatingAutomaton.st;
-  List.iter
-    (fun (a,i) ->
-      let l = List.concat (List.map (fun q ->
-          let fml = List.assoc (q,a) m.AlternatingAutomaton.delta in
-          let pis = AlternatingAutomaton.prime_implicants fml in
-          List.map (build_ity q i) pis) m.AlternatingAutomaton.st) in
-      register_cte_ty (a,l))
-    m.AlternatingAutomaton.alpha
-```
-
-</details><!--}}}-->
-
-`Scc.get_node`
---------------
-
-```ocaml
-let get_node (g:graph) x = List.assoc x g;;
-```
 
 <!--
 

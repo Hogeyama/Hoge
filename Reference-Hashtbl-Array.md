@@ -160,6 +160,8 @@ Array
     + `g`は`Conversion.convert(_ata)`由来（`Main.verifyParseResult`参照）
     + conversion.mlを見るとどうやら`g.nt`のサイズはパース結果のprerulesの長さに等しい？
 
+<!-- 普通のarrayのアクセスで起こるindex out of boundsを考えてなかった -->
+
 Hashtbl
 =======
 
@@ -168,7 +170,7 @@ Hashtbl
 + `Ai.register_newnode`
 + `Type.lookup_cte`
 
-<a name = "cegenevaluate_eterm"></a>
+<a name = "Cegen__evaluate_eterm"></a>
 + `Cegn.evaluate_eterm`
     + `mk_env vte' termss`を呼ぶときに`vte'`と`termss`の長さが同じである必要がある
 
