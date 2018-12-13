@@ -85,13 +85,10 @@ let x = !ref in e ==> let x = * in assume (P v); [[e]]
 
 ### どのくらい有効か
 
-述語`P`がうまく行きさえすれば
-[`Ai.merge_statevecs`](./Reference-Hashtbl-Array.md#Ai__merge_statevecs)はこれで検証できるようになるはず
+述語`P`がうまく行きさえすれば[`Ai.merge_statevecs`](./Reference-Hashtbl-Array.md#Ai__merge_statevecs)はこれで検証できるようになるはず．
+
 
 
 ### Stoe-Passing Style
-
-
-
 
 
