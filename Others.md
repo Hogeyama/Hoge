@@ -39,15 +39,17 @@ Saturate.range_types
 
     </details><!--}}}-->
 
-  + `Saturate.range_types_with_vte`
-      + 上の関数とほぼ同じ
+Saturate.range_types_with_vte
+-----------------------------
+
++ 上の関数とほぼ同じ
 
 Saturate.check_args_aux
 -----------------------
 
-  + リストの長さが同じという条件がどこで保証されているのか追うのが大変
-      + リストの長さが同じリスト？
-          <!-- + TODO ADT.mdに移動したほうがよいか -->
++ リストの長さが同じという条件がどこで保証されているのか追うのが大変
+    + リストの長さが同じリスト？
+        <!-- + TODO ADT.mdに移動したほうがよいか -->
 
     <details><!--{{{-->
 
