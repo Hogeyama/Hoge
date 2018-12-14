@@ -1,7 +1,65 @@
 
 
-ADTの関数エンコードに起因する問題
-=================================
+ADTのエンコード周りの問題
+=========================
+
+size function
+-------------
+
+### 概要
+
+[ADT.md](./ADT.md)
+
+### アイデア
+
+#### size functionをユーザーに宣言させる
+
+```ocaml
+type typ =
+  | O
+  | Arr of typ * typ
+
+(*{SPEC} measure arity : typ -> int {SPEC}*)
+let rec arity = function
+  | O -> 0
+  | Arr(arg_ty, ret_ty) -> 1 + arity ret_ty
+```
+
+```ocaml
+(*{SPEC}
+type mk_env
+  :  (l : int list)
+  -> { ty : typ | List.length l <= arity ty }
+  -> (int * typ) list
+{SPEC}*)
+let rec mk_env (xs : int list) ty = match (xs, ty) with
+  | [], _ -> []
+  | x::xs, Arr(arg_ty, ret_ty) -> (x,arg_ty) :: mk_env xs ret_ty
+  | _ -> assert false
+```
+
+  | arityを持ち回すように変換
+  v
+
+```ocaml
+let rec mk_env (len,xs) (ar,ty) = match (xs, ty) with
+  | [], _ -> assume (len=0); []
+  | x::(len',xs), Arr(arg_ty, (ar', ret_ty)) ->
+      assume (len = len' + 1);
+      assume (ar = ar' + 1);
+      (x,arg_ty) :: mk_env xs ret_ty
+  | _, O -> assume (ar = 0); assert false
+
+let main (len,xs) (ar,ty) =
+  assume (len <= ar);
+  let _ = mk_env (len,xs) (ar,ty) in
+  ()
+```
+
+##### 有効性
+
+caller側でグローバル変数に関する推論が必要になる例ばかりでHorSatのコードで有効性を試すのは難しそう
+
 
 非決定性
 --------

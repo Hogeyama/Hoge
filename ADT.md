@@ -280,7 +280,7 @@ let rec tcheck_wo_venv_inc term ity g ty_g =
         [[]]
       else []
   | App(_,_) ->
-      let (h,terms)=Grammar.decompose_term term in
+      let (h,terms) = Grammar.decompose_term term in
       let arity = List.length terms in
       let tyss =
         if h=NT(g) then
@@ -290,21 +290,19 @@ let rec tcheck_wo_venv_inc term ity g ty_g =
                                ^^^^^^^^^^
         else match_head_ity h [] arity ity
       in
-      List.fold_left
-        (fun vtes tys ->
-           (tcheck_terms_wo_venv_inc terms tys g ty_g)@vtes) [] tyss
+      List.fold_left (fun vtes tys -> (tcheck_terms_wo_venv_inc terms tys g ty_g)@vtes) [] tyss
 ```
 `ty_g`の出処をたどると`dequeue_nt_ty()`でグローバル変数に突き当たる
 + `dequeue_nt_ty`自身も複雑
 
 </details><!--}}}-->
 
+他
+==
 
 <a name = "Pobdd__make_node"></a>
 Pobdd.make_node
 ---------------
-
-再帰的ではないが同じ扱いができそうなためこの分類
 
 + `assert (node_id t1 <> node_id t2)`
 + caller
