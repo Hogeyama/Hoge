@@ -1,29 +1,28 @@
 
-Int Non-Negative
-================
+List Non-empty
+==============
 
-<a name = "Stype__arity2sty"></a>
-Stype.arity2sty
----------------
+<a name = "Main__report_breakdown"></a>
+Main.report_breakdown
+---------------------
 
 ```ocaml
-let rec arity2sty n =
-  if n<0 then assert false
-  else if n=0 then STbase
-  else STfun(STbase, arity2sty (n-1))
+let times : float list ref = ref []
 
-(* 唯一のcaller *)
-let alpha2cste alpha =
-  List.map (fun (a,k) ->
-    if k<0 then (a, new_tvar()) else (a, arity2sty k)) alpha
-                                         ^^^^^^^^^^^
+let report_breakdown start_t end_t =
+  let ts = !times in
+  let last = if ts=[] then start_t else List.hd ts in
+  let start = ref start_t in
+  List.iter
+    (fun t ->
+      print_string ("  checkpoint: "^(string_of_float (t -. !start))^"sec\n");
+      start := t)
+    (List.rev ts);
+  print_string ("  checkpoint: "^(string_of_float (end_t -. last))^"sec\n")
 ```
 
-+ 直前で`k<0`かどうかcheckしているのでsafe
+使われていない関数，moduleを削除すれば検証できる
 
-
-Nonempty List
-=============
 
 <a name = "Ai__mk_binding_depgraph_for_terms"></a>
 Ai.mk_binding_depgraph_for_terms
@@ -43,6 +42,159 @@ let mk_binding_depgraph_for_terms id vars =
       delete_duplication_unsorted
         (List.rev_map (fun (binding,_)->filter_binding vars' binding) bindings)
 ```
+
+<details><summary>手を加えることでMoCHiが検証できるようになったコード</summary><!--{{{-->
+
+```ocaml
+(* Stub code *)
+let rec bot() = bot()
+let rand_int() = Random.int 1000
+let rand_bool() = Random.bool()
+let rec rand_list rand_e () =
+  if rand_bool () then
+    []
+  else rand_e() :: rand_list rand_e ()
+let rand_int_list = rand_list rand_int
+
+(* 'Grammar' から型定義を持ってくる *)
+type nameNT = int
+type nameT = string
+type nameV = nameNT * int
+type term = NT of nameNT | T of nameT | Var of nameV | App of term * term
+type kind = O | Kfun of kind * kind
+type nonterminals = (string * kind) array
+type varinfo = string array array
+type terminals = (nameT * int) list
+type rule = (int * term)
+type rules = rule array
+type gram = {nt: nonterminals; t: terminals; vinfo: varinfo; r: rules; s: nameNT}
+(* 'Automaton' からも型定義を持ってくる *)
+type state = string
+type transfunc = ((state * nameT) * state list) list
+type automaton = {alpha: terminals;
+                  st: state list;
+                  delta: transfunc;
+                  init: state
+                 }
+(* 'Utilities'の関数を抽象化 *)
+let delete_duplication_unsorted _c =
+  rand_list (fun _ -> rand_int(), rand_int(), rand_int()) ()
+
+(* その他の使われる関数を抽象化 *)
+let rec split_vars _vars _j = (rand_int_list(), rand_int_list())
+let rec mk_binding_with_mask _vars _binding: (int * int * int list * int) list =
+  rand_list (fun () -> (rand_int(), rand_int(), rand_int_list(), rand_int())) ()
+let rec filter_binding (_vars: int list) (_binding : (int * int * int) list) =
+  rand_list (fun () -> (rand_int(), rand_int(), rand_int())) ()
+let binding_array_nt = ref [||]
+let register_dep_binding_env _id _bindings = ()
+let ids_in_bindings _bindings = rand_int_list()
+let register_dep_penv_binding _id1 _id2 = ()
+
+(*{SPEC}
+  external List.hd : (int*int) |len:len>0| list -> (int*int)
+{SPEC}*)
+let mk_binding_depgraph_for_terms id (vars : (int*int) list) =
+  if vars = [] then
+    register_dep_binding_env id [[]]
+  else
+    let f = fst(List.hd vars) in
+    let vars' = List.map snd vars in
+    let bindings = (!binding_array_nt).(f) in
+    let bindings' =
+      delete_duplication_unsorted
+        (List.rev_map (fun (binding,_)->filter_binding vars' binding) bindings)
+    in
+    let bindings_with_mask =
+      List.rev_map (mk_binding_with_mask vars') bindings'
+    in
+    let ids = ids_in_bindings bindings' in
+    register_dep_binding_env id bindings_with_mask;
+    List.iter (fun id1 -> register_dep_penv_binding id1 id) ids
+```
+
++ 手を加えた部分
+    + grammar.mlなどから型定義をコピー
+    + module importを削除
+    + 使われない関数を削除
+        + 使われない関数が`Utilities.foo`などを使用しているとOCamlの型検査が通らない（消してしまったので）
+    + `mk_binding_depgraph_for_terms`以外の残った関数を抽象化
+        + しないとやはり終わらなかった
+        + 全部抽象化する必要はなかった気はする
++ 自動検証のために必要なこと
+    + 型定義のコピーを自動化（mliだけは渡すようにする？）
+    + 使わない関数・moduleをOCamlの型検査が通るように適当に生成する
+    + （今回はしなくてもよかったが）使われる関数も適当に抽象化する
+
+#### TODO
+
++ 関数を抽象化すると検証できなくなる場合と抽象化しないと検証できない場合とがある
+
+    + 抽象化すると検証できない: その関数で保証されるinvariantがある
+    + 抽象化しないとと検証できない: その関数自身が失敗する，関数が複雑過ぎて計算量で死ぬ
+
+  どう選択するべき？
+
+    + 「最初は全て抽象化して，検証に失敗したら具体化していく」という方針を取るとして，
+      どの関数を
+
++ listのequalityのちょろまかしてある
+
+</details><!--}}}-->
+
+
+Int Non-Negative
+================
+
+<a name = "Stype__arity2sty"></a>
+Stype.arity2sty
+---------------
+
+```ocaml
+let rec arity2sty n =
+  if n<0 then assert false
+  else if n=0 then STbase
+  else STfun(STbase, arity2sty (n-1))
+
+(* 唯一のcaller *)
+let alpha2cste alpha =
+  List.map (fun (a,k) ->
+    if k<0 then (a, new_tvar()) else (a, arity2sty k)) alpha
+```
+
++ 直前で`k<0`かどうかcheckしているのでsafe
+
+### 手を加えることでMoCHiが検証できるようになったコード
+
+```ocaml
+(* from grammar.ml *)
+type kind = O | Kfun of kind * kind
+
+type tvar = int
+type st = STvar of (st option) ref | STbase | STfun of st * st
+let dummy_type = STbase
+let new_tvid() = ref None
+let new_tvar() = STvar(new_tvid())
+
+let rec arity2sty n =
+  if n<0 then assert false
+  else if n=0 then STbase
+  else STfun(STbase, arity2sty (n-1))
+
+(* 唯一のcaller *)
+let alpha2cste alpha =
+  List.map (fun (a,k) ->
+    if k<0 then (a, new_tvar()) else (a, arity2sty k)) alpha
+```
+
++ 手を加えた部分
+    + module importを削除
+    + 使わない関数を削除
+    + grammar.mlから`kind`の定義をコピー
++ 自動検証のために必要なこと
+    + `grammar.ml(i)`から型定義を持ってくる
+    + 使わない関数・moduleをOCamlの型検査が通るように適当に生成する
+    + （今回はしなくてもよかったが）使われる関数も適当に抽象化する
 
 
 Matching

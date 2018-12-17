@@ -1,9 +1,11 @@
 
 # HorSat2の分析
 
-+ [検証できる](./Possible.md)
++ [検証できる](./ReallyPossible.md)
+    + 0ケース
++ [少し改良すれば検証できそう](./Possible.md)
     + 10ケース
-+ [少し改良すれば検証できそう](./TrivialProblem.md)
++ [さらに改良すれば検証できそう](./TrivialProblem.md)
     + 13ケース
 + [参照・Hashtbl・配列](./Reference-Hashtbl-Array.md)
     + 18ケース以上
