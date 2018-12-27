@@ -1,5 +1,4 @@
 
-
 ADTのエンコード周りの問題
 =========================
 
@@ -107,8 +106,16 @@ TODO 仮に述語発見ができたとしてどれくらい検証できるか調
     + 述語抽象化
         + SMTがdecidableでない
             + TODO decidableなfragmentで十分か調べる
+            + LiquidTypeみたいに強く制限（固定）してもよいのでは
+                + membershipだけでも
     + 述語発見
         + Recursive Data Typesのときと同じ問題
+
+
+### 寺尾さんの
+
++ TODO 寺尾さんので扱える例なのか確認
+    + 扱える例が一つでもあるか…という感じだと思う
 
 
 <!--
@@ -146,7 +153,8 @@ let x = !ref in e ==> let x = * in assume (P v); [[e]]
 述語`P`がうまく行きさえすれば[`Ai.merge_statevecs`](./Reference-Hashtbl-Array.md#Ai__merge_statevecs)はこれで検証できるようになるはず．
 
 
+### Store-Passing Style
 
-### Stoe-Passing Style
-
++ うまく行きそうなケースはあるか
++ それを自動で判定してstore-passingに書き換えることはできるか
 

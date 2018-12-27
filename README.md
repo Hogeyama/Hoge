@@ -10,8 +10,8 @@
 + [参照・Hashtbl・配列](./Reference-Hashtbl-Array.md)
     + 18ケース以上
 + [リストのメンバーシップ等](./ListMembership.md)
-    + 20ケース以上
-        + `List.assoc`: 14ケース以上
+    + 18ケース以上
+        + `List.assoc`: 12ケース以上
         + `List.find`: 6ケース以上
 + [ADT](./ADT.md)
     + 17ケース以上

@@ -60,6 +60,7 @@ let rec evaluate_eterm eterm env =
           try Hashtbl.find tracetab (f,ity) with Not_found ->
             register_backchain f ity ntyid;
             Hashtbl.find tracetab (f,ity)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         in
         let (vte',body') = rename_vte_eterm vte body in
         let env' = mk_env vte' termss in
@@ -82,6 +83,7 @@ let rec evaluate_eterm eterm env =
         | (ItyFun(_,ty11,aty11), ItyFun(_,ty21,aty21)) ->
             begin match termss with
             | [] -> assert false
+                    ^^^^^^^^^^^^
             | ts::termss' ->
                 let tyterms = List.combine ty21 ts in
                 let ts' = List.map (fun aty ->
@@ -105,6 +107,8 @@ and evaluate_eterms ts env =
 ```
 
 </details><!--}}}-->
+
+
 
 検証が恐らくできないもの
 ========================

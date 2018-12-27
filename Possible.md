@@ -191,6 +191,7 @@ let alpha2cste alpha =
     + module importを削除
     + 使わない関数を削除
     + grammar.mlから`kind`の定義をコピー
+
 + 自動検証のために必要なこと
     + `grammar.ml(i)`から型定義を持ってくる
     + 使わない関数・moduleをOCamlの型検査が通るように適当に生成する

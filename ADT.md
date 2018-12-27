@@ -38,12 +38,22 @@ let rec mk_vte vars at =
 ```ocaml
 let register_backchain f ity ntyid =
   let (arity,body) = lookup_rule f in
-  let vars = mk_vars f arity in
+  let vars = mk_vars f arity in (* mk_varsは長さがarityのリストを返す *)
   let (vte,rty) = mk_vte vars ity in
   ...
 ```
 
 `let (arity,body) = lookup_rule f` のとき`body`のarityが`arity`以上であることを言う必要があるが，難しそう（グローバル変数への書き込み）
+
+アイデア
+: lookup tableを引数に．型 `(f':int) -> {arity,body| f = f' => arity = arity(ity) }`を付ける
+
+研究テーマアイデア
++ refinement typeの推論
+    + example inputを与えて，少なくともそれは通るようなrefinement typeを推論する，とか
+        + 手で与えても良いし，自動生成してもよいし，実行するコードを与えても良い
+
+
 関連する関数:
 
 ```ocaml
