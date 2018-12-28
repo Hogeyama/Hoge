@@ -3,10 +3,12 @@
 
 + [検証できる](./ReallyPossible.md)
     + 0ケース
-+ [少し改良すれば検証できそう](./Possible.md)
-    + 10ケース
-+ [さらに改良すれば検証できそう](./TrivialProblem.md)
++ [自動化できそうな変換によって検証できる形に落とし込めるケース](./Potential1.md)
+    + 5ケース
++ [自動化できそうな変換によって検証できる形に落とし込めるように見えたけどうまく行ってないケース](./Potential2.md)
     + 13ケース
++ [ちょっと難しいケース](./Level3.md)
+    + 9ケース
 + [参照・Hashtbl・配列](./Reference-Hashtbl-Array.md)
     + 18ケース以上
 + [リストのメンバーシップ等](./ListMembership.md)

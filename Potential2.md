@@ -69,10 +69,11 @@ let rec find_derivation ntyid vte term aty =
 
 </details><!--}}}-->
 
-<details><summary>検証</summary><!--{{{-->
++ 問題
+    + `Ai.mk_binding_depgraph_for_terms`と同じ方法でやろうとすると検証が終わらない．`-bool-init-empty`を付けても同様
+    + `eterm`の型が複雑なのが原因？
 
-`Ai.mk_binding_depgraph_for_terms`と同じ方法でやろうとすると検証が終わらない．
-`-bool-init-empty`を付けても同様
+<details>MoCHiに渡したコード<!--{{{-->
 
 ```ocaml
 (* 手動import *)
@@ -454,6 +455,9 @@ Utilities.indexlist
 -------------------
 
 ```ocaml
+let rec fromto m n =
+  if m>=n then [] else m::(fromto (m+1) n);;
+
 let indexlist l =
   let len = List.length l in
   let indices = fromto 0 len in
@@ -465,8 +469,32 @@ let indexlistr l =
   List.combine l indices
 ```
 
-+ 述語発見がうまくいっていない
-  TODO: うまく行かない原因調べる
+述語発見がうまく行かない(`fromto`の問題)
+
+<details><summary></summary><!--{{{-->
+
+```ocaml
+let rec fromto m n =
+  if m>=n then [] else m::(fromto (m+1) n);;
+
+(*{SPEC}
+  external List.combine : xs: int list -> int |len:len=List.length xs| list -> (int*int) list
+{SPEC}*)
+let indexlist (l : int list) =
+  let len = List.length l in
+  let indices = zero_to len in
+  List.combine indices l
+```
+
+`fromto 0`を次の`make_list`にすると通る:
+
+```ocaml
+let rec make_list n =
+  if n <= 0 then [] else n :: make_list (n-1)
+```
+
+</details><!--}}}-->
+
 
 <a name = "Ai__mk_trtab"></a>
 Ai.mk_trtab
@@ -571,100 +599,4 @@ let process_node (aterm,qs) =
 ```
 
 [同じ関数の別呼び出しで難しい方](./Reference-Hashtbl-Array.md#Ai__merge_statevecs)
-
-他
-==
-
-`Cegen.string_of_path`
-----------------------
-
-```ocaml
-(*{SPEC}
-type string_of_path : { t : tree | match t with Bottom -> false | _ -> true } -> string
-{SPEC}*)
-let rec string_of_path t =
-  match t with
-  | Node(a,tl) ->
-      let (i,t') = find_nonbot tl 1 in
-      if i=0 then ("("^a^",0)")
-      else ("("^a^","^(string_of_int i)^")"^(string_of_path t'))
-  | _ -> assert false
-(*{SPEC}
-type find_nonbot
-  :  tree list
-  -> { i : int | i > 0 }
-  -> { (j,t) : int * tree | match t with Bottom -> j = 0 | _ -> true }
-{SPEC}*)
-let rec find_nonbot tl i =
-  match tl with
-  | [] -> (0, Bottom)
-  | t::tl' ->
-      match t with
-      | Bottom -> find_nonbot tl' (i+1)
-      | Node(_,_) -> (i, t)
-```
-
-+ 今のmochiは`type tree = Bottom | Node of int * tree list`が扱えない（`tree list`の部分）
-    + 実装上の問題
-
-<a name = "Pobdd__make_node"></a>
-Pobdd.make_node
----------------
-
-  + `assert (node_id t1 <> node_id t2)`
-  + caller
-      + `bdd_var`, `bdd_nvar`, `neg`, `bdd_and`, `bdd_or`, `exists_vl`, `forall_vl`, `imp_and_exists`, `restrict_sorted`
-      + `neg`以外は呼び出し前にチェックが入る (`if node_id t1 = node_id t2 then ... else make_node t1 t2`)
-          + `neg`については[ここ](./ExpressionPower.md#Pobdd__make_node)
-
-  + 検証
-      + `bdd_var`, `bdd_nvar`は検証できた
-      + `bdd_and`, `bdd_or`, `exists_vl`, `forall_vl`, `imp_and_exists`, `restrict_sorted`は自分のPCではabstractでメモリを使い果たしたため分からず
-
-    <details>
-
-    ```ocaml
-    type bdd = Node of var * bdd * bdd * id * var list | Leaf of bool;;
-    let node_id = function
-      | Leaf(true) -> 0
-      | Leaf(false) -> 1
-      | Node(_,_,_,x,_) -> x
-
-    let make_node (v,t1,t2) =
-      let i1 = node_id t1 in
-      let i2 = node_id t2 in
-      assert (i1 <> i2);
-      ...
-
-    let bdd_true  = Leaf true
-    let bdd_false = Leaf false
-    let bdd_var v = make_node (v, bdd_true, bdd_false)
-
-    let bdd_and t1 t2 =
-      let memo = ref Op2Map.empty in
-      let rec go t1 t2 = match (t1,t2) with
-        | (Leaf b,t2) -> if b then t2 else bdd_false
-        | (t1,Leaf b) -> if b then t1 else bdd_false
-        | (Node (v1,x1,y1,i1,_), Node (v2,x2,y2,i2,_)) ->
-          if Op2Map.mem (i1,i2) !memo then Op2Map.find (i1,i2) !memo
-          else begin
-            let (z,x1,x2,y1,y2) = match (Elt.compare v1 v2) with
-              | 0 -> (v1,x1,x2,y1,y2)
-              | x when x < 0 -> (v1,x1,t2,y1,t2)
-              | _ -> (v2,t1,x2,t1,y2)
-            in
-            let t1' = go x1 x2 in
-            let t2' = go y1 y2 in
-            let t =
-              if node_id t1' = node_id t2' then t1'
-              else make_node (z,t1',t2') in
-            memo := Op2Map.add (i1,i2) t !memo;
-            t
-          end
-      in go t1 t2
-    ```
-
-    (8ケース)
-
-    </details>
 

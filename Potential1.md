@@ -302,37 +302,6 @@ total: 1.269 sec
 Matching
 ========
 
-<a name = "Ai__nt_in_term_with_linearity"></a>
-Ai.nt_in_term_with_linearity
-----------------------------
-
-```ocaml
-let rec nt_in_term_with_linearity term =
-  match term with
-  | Var(_) -> ([], [])
-  | T(_) ->  ([], [])
-  | NT(f) -> ([f], [])
-  | App(_,_) ->
-      let (h,terms) = Grammar.decompose_term term in
-      match h with
-      | NT(f) -> let nts = nt_in_terms terms in
-          if List.mem f nts then ([],nts)
-          else ([f],nts)
-      | Var(_) -> ([], nt_in_terms terms)
-      | T(a) ->
-          let linearity_info = Hashtbl.find tab_linearity a in
-          nt_in_terms_with_linearity terms linearity_info 0 ([],[])
-      | _ -> assert false
-```
-
-<details><!--{{{-->
-
-```ocaml
-
-```
-
-</details><!--}}}-->
-
 <a name = "Ai__term2head"></a>
 Ai.term2head
 ------------
