@@ -223,46 +223,43 @@ total: 36.785 sec
 
 </details><!--}}}-->
 
-<a name = "Ai__term2head"></a>
-Ai.term2head
-------------
+<a name = "Ai__nt_in_term_with_linearity"></a>
+Ai.nt_in_term_with_linearity
+----------------------------
 
 ```ocaml
-let rec decompose_term t =
-  match t with
-  | (NT(_) | T(_) | Var(_)) -> (t, [])
-  | App(t1,t2) -> let (h,ts) = decompose_term t1 in (h,ts@[t2])
-
-let term2head h =
-  match h with
-  | Var(x) -> Hvar(x)
-  | NT(f) -> Hnt(f)
-  | T(a) -> Ht(a)
-  | _ -> assert false
-
-(* caller *)
-let rec convert_term t =
-  let (h,terms) = Grammar.decompose_term t in
-       ^
-  if terms=[] then (term2head h, [])
-                    ^^^^^^^^^^^
-  else
-    let aterms = List.map convert_term terms in
-    let vars = vars_in_aterms aterms in
-    let id =
-      try
-        Hashtbl.find tab_terms_id aterms
-      with Not_found ->
-        let id = new_terms_id() in
-        Hashtbl.add tab_terms_id aterms id;
-        (!tab_id_terms).(id) <- (aterms,terms,vars);
-        id
-    in
-    (term2head h, [id])
-     ^^^^^^^^^^^
+let rec nt_in_term_with_linearity term =
+  match term with
+  | Var(_) -> ([], [])
+  | T(_) ->  ([], [])
+  | NT(f) -> ([f], [])
+  | App(_,_) ->
+      let (h,terms) = Grammar.decompose_term term in
+      match h with
+      | NT(f) -> let nts = nt_in_terms terms in
+          if List.mem f nts then ([],nts)
+          else ([f],nts)
+      | Var(_) -> ([], nt_in_terms terms)
+      | T(a) ->
+          let linearity_info = Hashtbl.find tab_linearity a in
+          nt_in_terms_with_linearity terms linearity_info 0 ([],[])
+      | _ -> assert false
+and nt_in_terms_with_linearity terms linearity_info i (nts1,nts2) =
+  match terms with
+    [] -> (nts1,nts2)
+  | t::terms' ->
+      let (nts1',nts2') =
+        if linearity_info.(i) then
+          nt_in_term_with_linearity t
+        else ([], Grammar.nt_in_term t)
+      in
+      let (nts1'',nts2'') = merge_nts_lin (nts1',nts2') (nts1,nts2) in
+      nt_in_terms_with_linearity terms' linearity_info (i+1) (nts1'',nts2'')
 ```
 
-<details><!--{{{-->
+相互再帰呼び出しのせいでうまく行かない？
+
+<details><summary>試したコード</summary><!--{{{-->
 
 ```ocaml
 type nameNT = int (* names of non-terminal symbols; they are just integers **)
@@ -282,66 +279,54 @@ let rand_string() = ""
 let rand_nameV (): nameV = (rand_int(), rand_int())
 
 (* 抽象化 *)
-let tab_terms_id = Hashtbl.create 100000
-let new_terms_id() = rand_int()
-let tab_id_terms = ref [||]
-let vars_in_aterms : (head * int list) list -> nameV list =
-  fun _ -> rand_list (rand_nameV) ()
+let nt_in_terms terms = rand_list rand_int ()
+let _Grammar_nt_in_term _ = rand_list rand_int ()
+let tab_linearity: (string, bool array) Hashtbl.t = Hashtbl.create 100
+let merge_nts_lin : int list * int list -> int list * int list -> int list * int list =
+  fun _ _ -> (rand_list rand_int (), rand_list rand_int ())
 
-(* ここから下は元のコードそのまま
- * ただしHashtbl.findがNot_foundを投げ得ることが表現されていない *)
+(***********************************************************************************)
 
 let rec decompose_term t =
   match t with
   | (NT(_) | T(_) | Var(_)) -> (t, [])
   | App(t1,t2) -> let (h,ts) = decompose_term t1 in (h,ts@[t2])
 
-let term2head h =
-  match h with
-  | Var(x) -> Hvar(x)
-  | NT(f) -> Hnt(f)
-  | T(a) -> Ht(a)
-  | _ -> assert false
+let rec nt_in_term_with_linearity term =
+  match term with
+  | Var(_) -> ([], [])
+  | T(_) ->  ([], [])
+  | NT(f) -> ([f], [])
+  | App(_,_) ->
+      let (h,terms) = decompose_term term in
+      match h with
+      | NT(f) -> rand_list rand_int (), rand_list rand_int ()
+          (* let nts = nt_in_terms terms in *)
+          (*   if List.mem f nts then ([],nts) *)
+          (*   else ([f],nts) *)
+      | Var(_) -> ([], nt_in_terms terms)
+      | T(a) ->
+          let linearity_info = Hashtbl.find tab_linearity a in
+          nt_in_terms_with_linearity terms linearity_info 0 ([],[])
+      | _ -> assert false
 
-(* caller *)
-let rec convert_term t =
-  let (h,terms) = decompose_term t in
-  if terms=[] then (term2head h, [])
-  else
-    let aterms = List.map convert_term terms in
-    let vars = vars_in_aterms aterms in
-    let id =
-      try
-        Hashtbl.find tab_terms_id aterms
-      with Not_found ->
-        let id = new_terms_id() in
-        Hashtbl.add tab_terms_id aterms id;
-        (!tab_id_terms).(id) <- (aterms,terms,vars);
-        id
-    in
-    (term2head h, [id])
+and nt_in_terms_with_linearity terms linearity_info i (nts1,nts2) =
+  match terms with
+    [] -> (nts1,nts2)
+  | t::terms' ->
+      (* let (nts1',nts2') = *)
+      (*   if linearity_info.(i) then *)
+      (*     nt_in_term_with_linearity t *)
+      (*   else ([], _Grammar_nt_in_term t) *)
+      (* in *)
+      (* let (nts1'',nts2'') = merge_nts_lin (nts1',nts2') (nts1,nts2) in *)
+      let (nts1'',nts2'') = rand_list rand_int (), rand_list rand_int() in
+      nt_in_terms_with_linearity terms' linearity_info (i+1) (nts1'',nts2'')
 
-(*
-MoCHi: Model Checker for Higher-Order Problems
-  Build: b889e4e (2018-12-17 20:48:51 +0900)
-  Z3 library version: 4.7.1.0
-  HorSat2 version: 0.94
-  HoIce version: 1.7.1
-  OCaml version: 4.03.0
-  Command: mochi-improve_encode_rec term2head.ml
-
-Safe!
-
-CEGAR-cycles: 3
-total: 141.248 sec
-  abst: 112.715 sec
-  mc: 10.098 sec
-  refine: 16.716 sec
-*)
+let main = nt_in_term_with_linearity
 ```
 
 </details><!--}}}-->
-
 
 <a name = "Saturate__ty_of_head"></a>
 Saturate.ty_of_head
@@ -364,7 +349,6 @@ let ty_of_term2 venv term =
   let tys_ity_list = List.map (split_ity arity) ty in
   check_args tys_ity_list terms venv []
 ```
-
 
 <a name = "Saturate__ty_of_head_q"></a>
 Saturate.ty_of_head_q
@@ -394,8 +378,11 @@ let rec check_ty_of_term venv term ity =
       let tyss = match_head_types h venv (List.length terms) ity in
                  ^^^^^^^^^^^^^^^^^^
       let vte = check_argtypes venv terms tyss in vte
+      ...
   ...
 ```
+
+TODO
 
 <a name = "Saturate__ty_of_head_q2"></a>
 Saturate.ty_of_head_q2
@@ -403,6 +390,7 @@ Saturate.ty_of_head_q2
 
 `ty_of_head_q2`とほぼ同じ
 
+TODO
 
 <a name = "Cegen__lookup_headty"></a>
 Cegen.lookup_headty
@@ -455,6 +443,8 @@ let rec find_derivation ntyid vte term aty =
       ) head_typings; raise Not_found
   with Found eterm -> eterm
 ```
+
+TODO
 
 List.combine
 ============

@@ -198,10 +198,11 @@ let mk_binding_depgraph_for_terms id (vars : (int*int) list) =
         + 型定義をコピー
         + 抽象化された関数を生成
     + `mk_binding_with_mask`のような関数を_適宜_抽象化
-        + 抽象化したせいで検証に通らなくなることもあるので判断が難しい？
+        + 抽象化したせいで検証に通らなくなることもあるので判断が難しい
         + 抽象化しないと通らないこともある
             + （興味の対象外の）assertion failureを起こす
             + 複雑過ぎて計算時間，スペースで死ぬ
+                + assertionの周りを
     + list equality
 
 ```
@@ -246,7 +247,8 @@ let alpha2cste alpha =
 
 + 直前で`k<0`かどうかcheckしているのでsafe
 
-### 手を加えることでMoCHiが検証できるようになったコード
+
+<details><summary>手を加えることでMoCHiが検証できるようになったコード</summary><!--{{{-->
 
 ```ocaml
 (* from grammar.ml *)
@@ -274,6 +276,8 @@ let alpha2cste alpha =
 
 + 自動検証のために必要なこと
     + `Ai.mk_binding_depgraph_for_terms`と同様
+
+</details><!--}}}-->
 
 ```
 MoCHi: Model Checker for Higher-Order Problems

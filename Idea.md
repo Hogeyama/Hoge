@@ -1,4 +1,43 @@
 
+
+全般
+====
+
+assertion周辺を切り出して検証．失敗したら拡大していく
+
+```
+let bdd_and t1 t2 =
+  let rec go t1 t2 = match (t1,t2) with
+    | (Node (_v1,x1,y1,_), Node (_v2,x2,y2,_)) ->
+      begin
+        let (z,x1,x2,y1,y2) = match (compare v1 v2) with
+          | 0 -> (v1,x1,x2,y1,y2)
+          | x when x < 0 -> (v1,x1,t2,y1,t2)
+          | _ -> (v2,t1,x2,t1,y2)
+        in
+        let t1' = go x1 x2 in
+        let t2' = go y1 y2 in
+        let t =
+          if node_id t1' = node_id t2' then t1'
+          else make_node (0,t1',t2') (* ここの2行だけで安全性が保証できる *)
+      end
+    | _ -> bdd_false
+  in go t1 t2;;
+```
+
+1週目
+
+```
+let bdd_and t1 t2 =
+  let rec go t1 t2 =
+        let t1' = rand() in
+        let t2' = rand() in
+          if node_id t1' = node_id t2' then t1'
+          else make_node (0,t1',t2')
+  in go t1 t2;;
+```
+
+
 ADTのエンコード周りの問題
 =========================
 
