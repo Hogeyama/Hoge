@@ -112,11 +112,9 @@ TODO 仮に述語発見ができたとしてどれくらい検証できるか調
         + Recursive Data Typesのときと同じ問題
 
 
-### 寺尾さんの
+### 寺尾さんの手法で扱える例があるか確認
 
-+ TODO 寺尾さんので扱える例なのか確認
-    + 扱える例が一つでもあるか…という感じだと思う
-
+「`term`に表れる全ての変数`v`について`List.mem_assoc v env`」という推論が必要なものばかりでとてもできそうにない
 
 <!--
 + A New Fast Tableau-Based Decision Procedure for an Unquantified Fragment of Set Theory
@@ -136,7 +134,6 @@ Reference
 --------
 
 ### 非決定的な値とみなす
-
 
 各Reference `ref`に述語`P`を割り当てて，書き込みと読み出しを次のように変換する．
 

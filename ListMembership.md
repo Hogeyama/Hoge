@@ -2,7 +2,6 @@
 List.assoc
 ==========
 
-
 Ai.add_binding_st
 -----------------
 
@@ -20,6 +19,7 @@ let add_binding_st f rho qs =
 
 
 </details><!--}}}-->
+
 
 Scc.split_list_at
 -----------------
@@ -86,24 +86,11 @@ and visit_next(g, x, nexts,scc) =
 
 </details><!--}}}-->
 
-<!--
-Grammar.find_dep
-----------------
-
-Grammar.find_sc
----------------
-
-`List.find (List.mem _) _`
-
-
-使われていなかった
--->
 
 Ai.mk_trtab_for_ata
 --------------------
 
-+ Invariant:
-  + `Conversion.convert_ata`の返り値のオートマトンについて`{a | (f,a) \in \dom(δ)} \subseteq \dom(Σ)`
++ `Conversion.convert_ata`の返り値のオートマトンについて`{a | (f,a) \in \dom(δ)} \subseteq \dom(Σ)`
 
 
 Cegen.lookup_headty
@@ -128,14 +115,16 @@ let register_backchain f ity ntyid =
   let (vte,rty) = mk_vte vars ity in
        ^^^
   let eterm = try find_derivation ntyid vte body rty
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   ...
 → find_derivation ntyid vte term aty (* 再帰 *)
 → find_headtype ntyid vte h aty k
 → lookup_headty vte h aty
 ```
 
-TODO
++ `lookup_rule`でグローバル変数についての推論が必要
+    + 「`body`中の`Var(x)`について，`∃ n. x = (f,n) かつ n < arity`が成立する」
+
 
 Cegen.evaluate_eterm
 --------------------
@@ -150,7 +139,6 @@ let rec evaluate_eterm eterm env =
           try Hashtbl.find tracetab (f,ity) with Not_found ->
             register_backchain f ity ntyid;
             Hashtbl.find tracetab (f,ity)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Hashtbl.find
         in
         let (vte',body') = rename_vte_eterm vte body in
         let env' = mk_env vte' termss in
@@ -162,13 +150,13 @@ let rec evaluate_eterm eterm env =
         let trees = List.map (fun ts -> evaluate_eterms ts env) termss in
         Node(a, trees)
       with Not_found -> assert false end
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ここは来ないのでは TODO
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ここは来ないのでは → TODO 移動
   | EVar(v,aty) ->
       begin try
         let eterm1 = List.assoc (v,aty) env in
+                     ^^^^^^^^^^^^^^^^^^^^^^
         evaluate_eterm (compose_eterm eterm1 termss) env
       with Not_found -> assert false end
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ここは来ないのでは part2
   | ECoerce(aty1,aty2,t) ->
       begin try
         match (aty1,aty2) with
@@ -176,7 +164,6 @@ let rec evaluate_eterm eterm env =
         | (ItyFun(_,ty11,aty11), ItyFun(_,ty21,aty21)) ->
             begin match termss with
             | [] -> assert false
-                    ^^^^^^^^^^^^
             | ts::termss' ->
                 let tyterms = List.combine ty21 ts in
                 let ts' = List.map (fun aty ->
@@ -188,7 +175,6 @@ let rec evaluate_eterm eterm env =
                 in evaluate_eterm (compose_eterm t1 termss') env
             end
         | _ -> assert false
-               ^^^^^^^^^^^^
       with Not_found -> assert false end
   | _ -> assert false
 and evaluate_eterms ts env =
@@ -200,8 +186,7 @@ and evaluate_eterms ts env =
       merge_tree t1 t2
 ```
 
-TODO
-+ 「ここには来ないのでは」は検証できるか
+`lookup_headty`と同じ問題
 
 
 Grammar.arity_of_t
@@ -230,7 +215,7 @@ let process_node (aterm,qs) =
 
 <!--
 + `let terminals = List.map (fun a -> (a, -1)) (terminals_in_rules rules)`でΣは作られる
-    + 「rulesに表れるaはterminalsに含まれる」が寺尾さんの手法で示せる？
+    + 「rulesに表れるaはterminalsに含まれる」が寺尾さんの手法で示せるかどうか
         + 包含は無理では
 + 「`process_node`に渡される`aterm`は`rules`のsubterm」は示せる？
     + 無理では
