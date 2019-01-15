@@ -47,3 +47,31 @@ let report_breakdown start_t end_t =
 
 + コミットしていない修正が必要
 
+
+List same length
+================
+
+
+<a name = "Utilities__inexlist"></a>
+
+Utilities.indexlist
+-------------------
+
+```ocaml
+let rec fromto m n =
+  if m>=n then [] else m::(fromto (m+1) n);;
+
+let indexlist l =
+  let len = List.length l in
+  let indices = fromto 0 len in
+  List.combine indices l
+
+let indexlistr l =
+  let len = List.length l in
+  let indices = fromto 0 len in
+  List.combine l indices
+```
+
+List.combineのspecを書いてutilities.mlを打ち切れば通る
+
+
